@@ -34,7 +34,7 @@ export function registerEventAction(eventName: EventName, callback: EventCallbac
  * Returns true if this message is a World or Event message, false otherwise
  * Handles callback invocation if we have any events registered
  */
-export function parseInstruction(json: any): json is GameMessage {
+export function parseInstruction(json: any): boolean {
     if (typeof json !== "object" || json === null) return false;
 
     if (json.text === "WORLD_TICK") {
