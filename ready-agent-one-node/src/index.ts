@@ -1,4 +1,4 @@
-import { WorldTickMessage, WorldEvent, GameMessage, EventName } from "./types/shared-types";
+import { WorldTick, WorldEvent, WorldMessage, EventName } from "./types/shared-types";
 
 type EventCallback = (eventData: object) => void;
 const actionMappings: Record<EventName, EventCallback[]> = {
@@ -8,14 +8,14 @@ const actionMappings: Record<EventName, EventCallback[]> = {
 };
 
 /**
- * A callback that gets invoked whenever the agent receives a WorldTickMessage
+ * A callback that gets invoked whenever the agent receives a WorldTick
  */
-let onWorldTick: (message: WorldTickMessage) => void = (message) => { };
+let onWorldTick: (message: WorldTick) => void = (message) => { };
 
 /**
  * Method to set WorldTick callback
  */
-export function setOnWorldTickCallback(callback: (message: WorldTickMessage) => void) {
+export function setOnWorldTickCallback(callback: (message: WorldTick) => void) {
     onWorldTick = callback;
 }
 
@@ -45,7 +45,7 @@ export function tryParseWorldMessage(json: any): boolean {
         ) {
             return false;
         }
-        onWorldTick(json as WorldTickMessage);
+        onWorldTick(json as WorldTick);
         return true;
     }
 

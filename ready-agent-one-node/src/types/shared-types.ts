@@ -11,9 +11,10 @@ export interface Player {
 * A base interface for the world tick message, sent on some interval by the game.
 * Contains a list of active players.
 */
-export interface WorldTickMessage {
+export interface WorldTick {
     text: "WORLD_TICK";
     players: Player[];
+    [key: string]: any;
 }
 
 /**
@@ -40,24 +41,31 @@ export interface WorldEventBase {
     text: "WORLD_EVENT";
     event: EventName;
     eventData: object;
+    [key: string]: any;
 }
 
 /**
  * An event where a player enters a zone specified by the game.
- * Includes basic information about the player.
+ * Includes basic information about the player and the entered zone
  */
 export interface PlayerEnterEvent extends WorldEventBase {
     event: typeof PLAYER_ENTER_EVENT;
-    eventData: Player;
+    eventData: {
+        player: Player,
+        zoneId: string
+    };
 }
 
 /**
  * An event where a player exits a zone specified by the game.
- * Includes basic information about the player.
+ * Includes basic information about the player and the exited zone
  */
 export interface PlayerExitEvent extends WorldEventBase {
     event: typeof PLAYER_EXIT_EVENT;
-    eventData: Player;
+    eventData: {
+        player: Player,
+        zoneId: string
+    };
 }
 
 /**
@@ -100,4 +108,4 @@ export interface CustomWorldEvent extends WorldEventBase {
 
 export type WorldEvent = PlayerEnterEvent | PlayerExitEvent | PlayerWonEvent | CustomWorldEvent;
 
-export type GameMessage = WorldTickMessage | WorldEvent;
+export type WorldMessage = WorldTick | WorldEvent;

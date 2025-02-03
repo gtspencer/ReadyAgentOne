@@ -2,6 +2,8 @@
 
 `ready-agent-one` is a framework for giving AI agents a novel way to interact meaningfully in a game world. It provides a structure to handle world (server) ticks and world events, allowing you to easily manage, customize, and process game events involving players.
 
+It's purpose is to define a standard (and provide necessary tooling to work within that standard) to intercept in-game world information and events with the purpose of controlling agent prompting and extending behavior beyond typical action schemas.
+
 ## Features
 - World Ticks: Keep track of ongoing gameplay and player statuses.
 - World Events: Trigger specific game actions such as player entry, exit, or winning events.
@@ -58,7 +60,7 @@ if (!parseSuccessful) {
 ```
 
 ## API
-`tryParseWorldMessage(json: any): json is GameMessage`
+`tryParseWorldMessage(json: any): json is WorldMessage`
 Parses an incoming game message and triggers the appropriate callbacks based on whether it's a `WORLD_TICK` or `WORLD_EVENT`.
 
 Parameters:
@@ -68,11 +70,11 @@ Returns:
 - `false` if the message does not match a valid `WORLD_TICK` or `WORLD_EVENT`.
 
 
-`setOnWorldTickCallback(callback: (message: WorldTickMessage) => void): void`
+`setOnWorldTickCallback(callback: (message: WorldTick) => void): void`
 Sets a callback function that will be called whenever a `WORLD_TICK` message is received.
 
 Parameters:
-- `callback`: The function to call when a world tick message is received. It receives the parsed `WorldTickMessage`.
+- `callback`: The function to call when a world tick message is received. It receives the parsed `WorldTick`.
 
 
 `registerEventAction(eventName: EventName, callback: EventCallback): void`
@@ -83,7 +85,7 @@ Parameters:
 - `callback`: The function to call when the event is triggered. It receives the `eventData` associated with the event.
 
 ## Types
-`WorldTickMessage`
+`WorldTick`
 Represents a world tick message that contains player information.
 
 ```ts
@@ -114,6 +116,33 @@ Represents a player object with a `userId` and `username`.
   userId: string;
   username: string;
 }
+```
+
+## Standard
+The `ready-agent-one` standard supports 2 primary messages, defined as `WorldMessage`:
+- `WorldTick`
+- `WorldEvent`
+
+It boils down to defining a message and a callback to that method.  The event callback then decides if the context is appropriate to pass to the agent.
+
+### WorldTick
+The `WorldTick` is a message sent from the game authority (usually the game server) on a specified interval to inform the agent of the current game state.  Currently it supports a list of active players, but its interface is extendible.
+
+### WorldEvent
+The `WorldEvent` message is sent whenever something noteworthy happens in game.  It contains a unique `EventName` that identifies the context of the event.  Furthermore, it contains an `eventData` object with additional context on the event.
+
+Below are the currently supported events, with eventData contexts:
+| Event    | Event Data |
+| -------- | ------- |
+| `PLAYER_ENTER`  |   `{ player: Player, zoneId: string }`  |
+| `PLAYER_EXIT` | `{ player: Player, zoneId: string }`     |
+| `PLAYER_WON`    | `{ player: Player, score: numer, game: string }`    |
+| `GAME_COMPLETED_EVENT`    | `{ rank: Player[], game: string }`    |
+
+While some events are standardized and included in this package, any event name can be manually added and configured.
+
+```ts
+registerEventAction("CUSTOM_EVENT_NAME", OnCustomEventCallback)
 ```
 
 ## Testing

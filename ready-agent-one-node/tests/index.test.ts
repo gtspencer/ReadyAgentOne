@@ -6,7 +6,7 @@ import {
   import { PLAYER_ENTER_EVENT, PLAYER_EXIT_EVENT, PLAYER_WON_EVENT } from "../src/types/shared-types";
   
   describe("tryParseWorldMessage", () => {
-    test("should correctly identify and process a WorldTickMessage", () => {
+    test("should correctly identify and process a WorldTick", () => {
       const mockCallback = jest.fn();
   
       setOnWorldTickCallback(mockCallback);

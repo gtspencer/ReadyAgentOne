@@ -4,7 +4,7 @@ export interface Player {
     username: string;
 }
 
-export interface WorldTickMessage {
+export interface WorldTick {
     text: "WORLD_TICK";
     players: Player[];
 }
@@ -66,7 +66,7 @@ export interface CustomWorldEvent extends WorldEventBase {
 
 export type WorldEvent = PlayerEnterEvent | PlayerExitEvent | PlayerWonEvent | CustomWorldEvent;
 
-export type GameMessage = WorldTickMessage | WorldEvent;
+export type WorldMessage = WorldTick | WorldEvent;
 
 // Chat types
 export interface ChatMessage {

@@ -14,7 +14,7 @@ import {
   setOnWorldTickCallback,
 } from "ready-agent-one/src";
 import {
-  WorldTickMessage,
+  WorldTick,
   PLAYER_WON_EVENT,
   GAME_COMPLETED_EVENT,
   PlayerWonEventData,
@@ -181,7 +181,7 @@ function initializeReadyAgentOne() {
   registerEventAction(GAME_COMPLETED_EVENT, OngameCompleted)
 }
 
-async function OnWorldTick(message: WorldTickMessage) {
+async function OnWorldTick(message: WorldTick) {
   // Handle active players (maybe stream to them?)
   console.log('got world tick message')
 }
