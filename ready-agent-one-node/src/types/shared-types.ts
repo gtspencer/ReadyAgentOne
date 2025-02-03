@@ -66,7 +66,13 @@ export interface PlayerExitEvent extends WorldEventBase {
  */
 export interface PlayerWonEvent extends WorldEventBase {
     event: typeof PLAYER_WON_EVENT;
-    eventData: { player: Player; score: number; game: string };
+    eventData: PlayerWonEventData;
+}
+
+export interface PlayerWonEventData {
+    player: Player;
+    score: number;
+    game: string
 }
 
 /**
@@ -75,7 +81,13 @@ export interface PlayerWonEvent extends WorldEventBase {
  */
 export interface GameCompletedEvent extends WorldEventBase {
     event: typeof GAME_COMPLETED_EVENT;
-    eventData: { rank: Player[]; game: string; duration: number };
+    eventData: GameCompletedEventData;
+}
+
+export interface GameCompletedEventData {
+    rank: Player[];
+    game: string;
+    duration: number
 }
 
 /**

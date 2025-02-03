@@ -8,7 +8,16 @@ import {
   cdpWalletActionProvider,
   pythActionProvider,
 } from "@coinbase/agentkit";
-
+import {
+  parseInstruction,
+  registerEventAction,
+  setOnWorldTickCallback,
+} from "ready-agent-one/src";
+import {
+  WorldTickMessage,
+  PLAYER_WON_EVENT,
+  PlayerWonEventData
+} from "ready-agent-one/src/types/shared-types";
 import { getLangChainTools } from "@coinbase/agentkit-langchain";
 import { HumanMessage } from "@langchain/core/messages";
 import { MemorySaver } from "@langchain/langgraph";
@@ -161,11 +170,27 @@ async function initializeAgent() {
   }
 }
 
+function initializeReadyAgentOne() {
+  setOnWorldTickCallback(OnWorldTick)
+  registerEventAction(PLAYER_WON_EVENT, OnPlayerWon)
+}
+
+async function OnWorldTick(message: WorldTickMessage) {
+  // Handle active players (maybe stream to them?)
+  console.log('got world tick message')
+}
+
+async function OnPlayerWon(eventData: any) {
+  // Handle player won event
+  console.log('got player won event message')
+}
+
+
 export async function handleMessage(userMessage: any): Promise<string> {
   try {
-
-    // TODO pass message to ReadyAgentOne package to see if its a game message
-
+    if (parseInstruction(userMessage)) {
+      return "Confirmed received World Event";
+    }
 
     let text = userMessage["text"]
 
@@ -200,6 +225,8 @@ export async function startAgent() {
     const { agent, config } = await initializeAgent();
     globalThis.agent = agent;
     globalThis.config = config;
+
+    initializeReadyAgentOne();
 
   } catch (error) {
     if (error instanceof Error) {

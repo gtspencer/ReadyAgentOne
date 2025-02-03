@@ -4,7 +4,11 @@
 async function sendPostRequest() {
     const url = 'http://localhost:3000/readyagentone';
     const data = {
-      text: 'Ready for action!',
+      text: 'WORLD_TICK',
+      players: [{
+        userId: "1234",
+        username: "testName"
+      }]
     };
   
     try {
