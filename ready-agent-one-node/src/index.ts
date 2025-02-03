@@ -7,12 +7,21 @@ const actionMappings: Record<EventName, EventCallback[]> = {
     PLAYER_WON: [],
 };
 
-let onWorldTick: (message: WorldTickMessage) => void = () => { };
+/**
+ * A callback that gets invoked whenever the agent receives a WorldTickMessage
+ */
+let onWorldTick: (message: WorldTickMessage) => void = (message) => { };
 
+/**
+ * Method to set WorldTick callback
+ */
 export function setOnWorldTickCallback(callback: (message: WorldTickMessage) => void) {
     onWorldTick = callback;
 }
 
+/**
+ * A method to register event actions, either specified in types or custom
+ */
 export function registerEventAction(eventName: EventName, callback: EventCallback) {
     if (!actionMappings[eventName]) {
         actionMappings[eventName] = [];
@@ -20,6 +29,11 @@ export function registerEventAction(eventName: EventName, callback: EventCallbac
     actionMappings[eventName].push(callback);
 }
 
+/**
+ * Parses the message
+ * Returns true if this message is a World or Event message, false otherwise
+ * Handles callback invocation if we have any events registered
+ */
 export function parseInstruction(json: any): json is GameMessage {
     if (typeof json !== "object" || json === null) return false;
 
