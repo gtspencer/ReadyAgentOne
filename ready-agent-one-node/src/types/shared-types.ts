@@ -87,7 +87,6 @@ export interface GameCompletedEvent extends WorldEventBase {
 export interface GameCompletedEventData {
     rank: Player[];
     game: string;
-    duration: number
 }
 
 /**

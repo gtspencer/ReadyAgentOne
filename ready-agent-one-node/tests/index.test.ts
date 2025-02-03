@@ -1,11 +1,11 @@
 import { 
-    parseInstruction, 
+    tryParseWorldMessage, 
     setOnWorldTickCallback, 
     registerEventAction 
   } from "../src/index";
   import { PLAYER_ENTER_EVENT, PLAYER_EXIT_EVENT, PLAYER_WON_EVENT } from "../src/types/shared-types";
   
-  describe("parseInstruction", () => {
+  describe("tryParseWorldMessage", () => {
     test("should correctly identify and process a WorldTickMessage", () => {
       const mockCallback = jest.fn();
   
@@ -16,7 +16,7 @@ import {
         players: [{ userId: "1234-1234-1234-1234", username: "Player1" }],
       };
   
-      const result = parseInstruction(tickMessage);
+      const result = tryParseWorldMessage(tickMessage);
   
       expect(result).toBe(true);
       expect(mockCallback).toHaveBeenCalledWith(tickMessage);
@@ -33,7 +33,7 @@ import {
         eventData: { userId: "5678-5678-5678-5678", username: "NewPlayer" },
       };
   
-      const result = parseInstruction(eventMessage);
+      const result = tryParseWorldMessage(eventMessage);
   
       expect(result).toBe(true);
       expect(mockEventCallback).toHaveBeenCalledWith(eventMessage.eventData);
@@ -50,7 +50,7 @@ import {
           eventData: { userId: "5678-5678-5678-5678", username: "NewPlayer" },
         };
     
-        const result = parseInstruction(eventMessage);
+        const result = tryParseWorldMessage(eventMessage);
     
         expect(result).toBe(true);
         expect(mockEventCallback).toHaveBeenCalledWith(eventMessage.eventData);
@@ -64,7 +64,7 @@ import {
       ];
   
       invalidMessages.forEach((msg) => {
-        expect(parseInstruction(msg)).toBe(false);
+        expect(tryParseWorldMessage(msg)).toBe(false);
       });
     });
   
@@ -77,7 +77,7 @@ import {
         eventData: { userId: "9999-9999-9999-9999", username: "Champion" },
       };
   
-      const result = parseInstruction(unregisteredEventMessage);
+      const result = tryParseWorldMessage(unregisteredEventMessage);
   
       expect(result).toBe(true);
       expect(mockCallback).not.toHaveBeenCalled(); // No callback should have been triggered

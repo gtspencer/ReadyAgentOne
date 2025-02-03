@@ -18,7 +18,7 @@ npm install ready-agent-one
 ## Usage
 1. Importing the library
 ```ts
-import { parseInstruction, setOnWorldTickCallback, registerEventAction } from 'ready-agent-one';
+import { tryParseWorldMessage, setOnWorldTickCallback, registerEventAction } from 'ready-agent-one';
 import { PLAYER_ENTER_EVENT, PLAYER_EXIT_EVENT } from 'ready-agent-one/dist/types/sharedTypes';
 ```
 
@@ -43,14 +43,14 @@ registerEventAction(PLAYER_EXIT_EVENT, (data) => {
 ```
 
 4. Parse incoming game messages
-You can parse game messages (either world ticks or events) using parseInstruction:
+You can parse game messages (either world ticks or events) using tryParseWorldMessage:
 ```ts
 const worldTickMessageFromGame = {
   text: 'WORLD_TICK',
   players: [{ userId: '1234', username: 'Player1' }],
 };
 
-const parseSuccessful = parseInstruction(worldTickMessageFromGame); // Triggers onWorldTick callback
+const parseSuccessful = tryParseWorldMessage(worldTickMessageFromGame); // Triggers onWorldTick callback
 
 if (!parseSuccessful) {
     // if parse not successful, this is not a world message, and the agent can reply as they please
@@ -58,7 +58,7 @@ if (!parseSuccessful) {
 ```
 
 ## API
-`parseInstruction(json: any): json is GameMessage`
+`tryParseWorldMessage(json: any): json is GameMessage`
 Parses an incoming game message and triggers the appropriate callbacks based on whether it's a `WORLD_TICK` or `WORLD_EVENT`.
 
 Parameters:

@@ -9,14 +9,15 @@ import {
   pythActionProvider,
 } from "@coinbase/agentkit";
 import {
-  parseInstruction,
+  tryParseWorldMessage,
   registerEventAction,
   setOnWorldTickCallback,
 } from "ready-agent-one/src";
 import {
   WorldTickMessage,
   PLAYER_WON_EVENT,
-  PlayerWonEventData
+  GAME_COMPLETED_EVENT,
+  PlayerWonEventData,
 } from "ready-agent-one/src/types/shared-types";
 import { getLangChainTools } from "@coinbase/agentkit-langchain";
 import { HumanMessage } from "@langchain/core/messages";
@@ -176,7 +177,8 @@ async function initializeAgent() {
 
 function initializeReadyAgentOne() {
   setOnWorldTickCallback(OnWorldTick)
-  registerEventAction(PLAYER_WON_EVENT, OnPlayerWon)
+  // registerEventAction(PLAYER_WON_EVENT, OnPlayerWon)
+  registerEventAction(GAME_COMPLETED_EVENT, OngameCompleted)
 }
 
 async function OnWorldTick(message: WorldTickMessage) {
@@ -191,6 +193,10 @@ async function OnPlayerWon(eventData: any) {
   sendTextToAgent(message);
 }
 
+async function OngameCompleted(eventData: any) {
+  const winner = eventData.players[0].username;
+}
+
 
 export async function handleMessage(userMessage: any): Promise<string> {
   try {
@@ -198,7 +204,7 @@ export async function handleMessage(userMessage: any): Promise<string> {
     const playerName = userMessage["userName"] ?? "Default player name";
     const walletAddress = findRelevantWalletAddress(userMessage["walletInfo"] ?? []);
 
-    if (parseInstruction(userMessage)) {
+    if (tryParseWorldMessage(userMessage)) {
       return "Confirmed received World message";
     }
 
