@@ -116,7 +116,7 @@ async function initializeAgent() {
           apiKeyName: process.env.CDP_API_KEY_NAME,
           apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY?.replace(/\\n/g, "\n"),
         }),
-        superfluidStreamActionProvider()
+        // superfluidStreamActionProvider()
       ],
     });
 
@@ -161,12 +161,15 @@ async function initializeAgent() {
   }
 }
 
-export async function handleMessage(userMessage: string): Promise<string> {
+export async function handleMessage(userMessage: any): Promise<string> {
   try {
 
-    // pass message to ReadyAgentOne package to see if its a game message
+    // TODO pass message to ReadyAgentOne package to see if its a game message
 
-    const stream = await agent.stream({ messages: [new HumanMessage(userMessage)] }, config);
+
+    let text = userMessage["text"]
+
+    const stream = await agent.stream({ messages: [new HumanMessage(text)] }, config);
 
     let message = "";
     for await (const chunk of stream) {

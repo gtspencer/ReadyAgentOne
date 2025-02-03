@@ -24,8 +24,9 @@ app.post("/readyagentone", async (req: Request, res: Response) => {
     console.log('Received data:', data);
 
     var response = await handleMessage(data);
+    console.log('Agent response: ' + response)
     
-    res.status(200).json({ text: response, receivedData: data });
+    res.status(200).json({ text: response });
 });
 
 // Start the server
