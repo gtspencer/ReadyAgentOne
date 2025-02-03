@@ -15,7 +15,7 @@ import { ActionProvider, WalletProvider, CreateAction, EvmWalletProvider, Networ
 /**
  * SuperfluidStreamActionProvider is an action provider for Superfluid interactions.
  */
-export class SuperfluidStreamActionProvider extends ActionProvider<WalletProvider> {
+export class SuperfluidStreamActionProvider extends ActionProvider<EvmWalletProvider> {
 
   /**
    * Constructor for the SuperfluidStreamActionProvider class.

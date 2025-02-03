@@ -10,13 +10,19 @@
     "lint": "eslint . --ext .ts",
     "prepare": "npm run build"
   },
-  "keywords": ["AI", "game development", "framework", "typescript"],
+  "keywords": [
+    "AI",
+    "game development",
+    "framework",
+    "typescript"
+  ],
   "author": "Your Name",
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^5.0.0",
-    "ts-node": "^10.9.1",
+    "@types/jest": "^29.5.14",
     "eslint": "^8.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.0",
     "vitest": "^1.0.0"
   }
 }

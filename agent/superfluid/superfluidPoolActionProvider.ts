@@ -6,13 +6,13 @@ import {
   GDAv1ForwarderABI
 } from "./constants";
 import { encodeFunctionData, Hex } from "viem";
-import { ActionProvider, CreateAction, EvmWalletProvider } from "@coinbase/agentkit";
+import { ActionProvider, CreateAction, EvmWalletProvider, Network } from "@coinbase/agentkit";
 
 
 /**
  * SuperfluidPoolActionProvider is an action provider for Superfluid interactions.
  */
-export class SuperfluidPoolActionProvider extends ActionProvider {
+export class SuperfluidPoolActionProvider extends ActionProvider<EvmWalletProvider> {
 
   /**
    * Constructor for the SuperfluidPoolActionProvider class.
@@ -58,7 +58,7 @@ Do not use the ERC20 address as the destination address. If you are unsure of th
       });
 
       const receipt = await walletProvider.waitForTransactionReceipt(hash);
-      const [success, poolAddress] = receipt.events.find(e => e.event === 'PoolCreated').args;
+      const [success, poolAddress] = receipt.events.find((e: { event: string; }) => e.event === 'PoolCreated').args;
 
       // todo store this poolAddress is memory so we can manipulate it later (we don't trust the llm to remember...)
       return `Created pool of token ${args.erc20TokenAddress} at ${poolAddress}`;

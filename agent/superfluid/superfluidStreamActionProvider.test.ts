@@ -6,7 +6,7 @@ import {
   CFAv1ForwarderABI,
   GDAv1ForwarderABI
 } from "./constants";
-import { EvmWalletProvider } from "../../wallet-providers";
+import { EvmWalletProvider } from "@coinbase/agentkit";
 
 describe("SuperfluidStreamActionProvider", () => {
   const MOCK_ADDRESS = "0xe6b2af36b3bb8d47206a129ff11d5a2de2a63c83";

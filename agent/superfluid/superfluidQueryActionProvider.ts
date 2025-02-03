@@ -3,13 +3,13 @@ import { z } from "zod";
 import { encodeFunctionData, Hex } from "viem";
 import { EmptySchema } from "./schemas";
 import { getAccountOutflow } from "./graphQueries/superfluidGraphQueries"
-import { ActionProvider, WalletProvider, CreateAction, EvmWalletProvider, Network } from "@coinbase/agentkit";
+import { ActionProvider, CreateAction, EvmWalletProvider, Network } from "@coinbase/agentkit";
 
 
 /**
  * SuperfluidQueryActionProvider is an action provider for Superfluid interactions.
  */
-export class SuperfluidQueryActionProvider extends ActionProvider {
+export class SuperfluidQueryActionProvider extends ActionProvider<EvmWalletProvider> {
 
     /**
      * Constructor for the SuperfluidQueryActionProvider class.
@@ -25,8 +25,15 @@ export class SuperfluidQueryActionProvider extends ActionProvider {
      * @param walletProvider - The wallet provider to start the pool from.
      * @returns A JSON string containing the account details or error message
      */
-    @CreateAction
-        ({ name: "my_action", description: "My action", schema: myActionSchema })
+    @CreateAction({
+        name: "query_streams",
+        description: `
+This tool will query the Superfluid subgraph to find a list of addresses to which you are streaming a token.
+It takes nothing as input; you will be checking against your own wallet.
+It returns a list of account outflows, each with a receiver (wallet address), and a flow rate. If the flow rate is greater than zero, there is a current flow.
+`,
+        schema: EmptySchema,
+    })
     async queryStreams(
         walletProvider: EvmWalletProvider,
     ): Promise<string> {
