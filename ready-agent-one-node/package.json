@@ -1,5 +1,5 @@
 {
-  "name": "ReadyAgentOne",
+  "name": "ready-agent-one",
   "version": "0.1.0",
   "description": "A framework giving AI agents a toolkit to interact meaningfully in a game world.",
   "main": "dist/index.js",

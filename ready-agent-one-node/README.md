@@ -1,6 +1,6 @@
-# ReadyAgentOne
+# ready-agent-one
 
-`ReadyAgentOne` is a framework for giving AI agents a novel way to interact meaningfully in a game world. It provides a structure to handle world (server) ticks and world events, allowing you to easily manage, customize, and process game events involving players.
+`ready-agent-one` is a framework for giving AI agents a novel way to interact meaningfully in a game world. It provides a structure to handle world (server) ticks and world events, allowing you to easily manage, customize, and process game events involving players.
 
 ## Features
 - World Ticks: Keep track of ongoing gameplay and player statuses.
@@ -10,16 +10,16 @@
 - TypeScript Support: Fully typed API to ensure reliability and clarity
 
 ## Installation
-To install ReadyAgentOne, run the following command:
+To install ready-agent-one, run the following command:
 ```bash
-npm install ReadyAgentOne
+npm install ready-agent-one
 ```
 
 ## Usage
 1. Importing the library
 ```ts
-import { parseInstruction, setOnWorldTickCallback, registerEventAction } from 'ReadyAgentOne';
-import { PLAYER_ENTER_EVENT, PLAYER_EXIT_EVENT } from 'ReadyAgentOne/dist/types/sharedTypes';
+import { parseInstruction, setOnWorldTickCallback, registerEventAction } from 'ready-agent-one';
+import { PLAYER_ENTER_EVENT, PLAYER_EXIT_EVENT } from 'ready-agent-one/dist/types/sharedTypes';
 ```
 
 2. Set up the world tick handler
