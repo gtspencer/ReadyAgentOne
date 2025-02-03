@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node ./agent/server.ts"
+    "start": "ts-node ./agent/server.ts",
+    "local": "ts-node ./agent/chatbot.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
     "@langchain/core": "^0.3.19",
     "@langchain/langgraph": "^0.2.21",
     "@langchain/openai": "^0.3.14",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.2",
     "graphql-request": "^7.1.2",

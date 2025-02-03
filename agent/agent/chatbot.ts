@@ -245,10 +245,10 @@ function findRelevantWalletAddress(walletInfo: any[]): string {
   const baseChainWallet = walletInfo.find(wallet => wallet.chain === "Base");
 
   if (baseChainWallet) {
-      return baseChainWallet.address;
+    return baseChainWallet.address;
   } else {
-      const ethereumChainWallet = walletInfo.find(wallet => wallet.chain === "Ethereum");
-      return ethereumChainWallet ? ethereumChainWallet.address : null;
+    const ethereumChainWallet = walletInfo.find(wallet => wallet.chain === "Ethereum");
+    return ethereumChainWallet ? ethereumChainWallet.address : null;
   }
 }
 
@@ -271,11 +271,4 @@ export async function startAgent() {
   }
 }
 
-// if (require.main === module) {
-//   console.log("Starting Agent...");
-//   startAgent().catch(error => {
-//     console.error("Fatal error:", error);
-//     process.exit(1);
-//   });
-// }
 
