@@ -6,10 +6,24 @@ import { ChatMessage } from './types';
 function App() {
   const [endpoint, setEndpoint] = useState('http://localhost:3000/readyagentone');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [currentPlayer, setCurrentPlayer] = useState({
+    userId: '1',
+    username: 'Player1'
+  });
 
   const handleSendMessage = async (content: string) => {
-    // Add user message to chat
-    const userMessage: ChatMessage = { role: 'user', content };
+    const messagePayload = {
+      text: content,
+      userName: currentPlayer.username,
+      userId: currentPlayer.userId,
+      version: "0.1"
+    };
+
+    const userMessage: ChatMessage = {
+      role: 'user',
+      content,
+      username: currentPlayer.username
+    };
     setMessages(prev => [...prev, userMessage]);
 
     try {
@@ -18,19 +32,18 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: content }),
+        body: JSON.stringify(messagePayload),
+        keepalive: true,
       });
 
       const data = await response.json();
 
-      // Add assistant response to chat
       const assistantMessage: ChatMessage = {
         role: 'assistant',
-        content: data.response || 'No response from the assistant',
+        content: data.text || 'No response from the assistant',
       };
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
-      // Add error message to chat
       const errorMessage: ChatMessage = {
         role: 'assistant',
         content: 'Error: Could not connect to the AI agent.',
@@ -54,11 +67,13 @@ function App() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen bg-gray-900 text-white">
       <Sidebar
         endpoint={endpoint}
         onEndpointChange={setEndpoint}
         onSendEvent={handleSendEvent}
+        currentPlayer={currentPlayer}
+        onPlayerChange={setCurrentPlayer}
       />
       <div className="flex-1">
         <ChatWindow
