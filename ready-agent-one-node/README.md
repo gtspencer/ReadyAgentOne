@@ -36,7 +36,7 @@ setOnWorldTickCallback((message) => {
 registerEventAction(PLAYER_ENTER_EVENT, (data) => {
   console.log('Player entered:', data);
 
-  // handle agent response for player entering (eg: award player with an NFT or a Superfluid stream)
+  // handle agent response for player entering a zone (eg: award player with an NFT or a Superfluid stream)
 });
 
 registerEventAction(PLAYER_EXIT_EVENT, (data) => {
@@ -47,15 +47,17 @@ registerEventAction(PLAYER_EXIT_EVENT, (data) => {
 4. Parse incoming game messages
 You can parse game messages (either world ticks or events) using tryParseWorldMessage:
 ```ts
-const worldTickMessageFromGame = {
+const messageFromGame = {
   text: 'WORLD_TICK',
   players: [{ userId: '1234', username: 'Player1' }],
 };
 
-const parseSuccessful = tryParseWorldMessage(worldTickMessageFromGame); // Triggers onWorldTick callback
+const parseSuccessful = tryParseWorldMessage(messageFromGame); // Triggers onWorldTick callback
 
 if (!parseSuccessful) {
     // if parse not successful, this is not a world message, and the agent can reply as they please
+} else {
+  agent.respond(messageFromGame);
 }
 ```
 
@@ -123,7 +125,7 @@ The `ready-agent-one` standard supports 2 primary messages, defined as `WorldMes
 - `WorldTick`
 - `WorldEvent`
 
-It boils down to defining a message and a callback to that method.  The event callback then decides if the context is appropriate to pass to the agent.
+It boils down to defining a message and a callback to that method.  The event callback then decides if the message context is appropriate to pass to the agent.
 
 ### WorldTick
 The `WorldTick` is a message sent from the game authority (usually the game server) on a specified interval to inform the agent of the current game state.  Currently it supports a list of active players, but its interface is extendible.
