@@ -25,9 +25,24 @@ app.post("/readyagentone", async (req: Request, res: Response) => {
 
     var response = await handleMessage(data);
     console.log('Agent response: ' + response)
-    
-    res.status(200).json({ text: response });
+
+    var action = inferAction(response);
+    console.log('Inferred action: ' + action)
+
+    res.status(200).json(
+        {
+            text: response,
+            ...(action !== '' && { action })
+        }
+    );
 });
+
+// used to infer actions from the agent text
+// will check for keywords (eg: OPEN LOBBY START GAME) -> HOST_LOBBY
+// to check if we need to append an action to the message
+function inferAction(agentResponse: string): string {
+    return "";
+}
 
 // Start the server
 const PORT = 3000;

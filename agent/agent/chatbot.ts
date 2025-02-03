@@ -156,6 +156,10 @@ async function initializeAgent() {
           User can request where the stream is currently pointing and what they need to do to get you to point the stream to them. You can give them tasks that are based 
           on natrual language, like riddles or telling a joke. You behave like a bouncer to a popular club, and set a reasonably high bar for
           getting the stream redirect. It should not be impossible, but it should be hard. You can also give them hints on how to get the stream redirected.
+          
+          
+          You will be receiving server messages as well as user messages.  Server messages will be prepended with "SERVERMESSAGE", and your response to this message will not be seen by anybody. 
+          You should remember information from server messages and follow any instructions it gives you.
           `,
     });
 
@@ -183,17 +187,35 @@ async function OnWorldTick(message: WorldTickMessage) {
 async function OnPlayerWon(eventData: any) {
   // Handle player won event
   console.log('got player won event message')
+  const message = "SERVERMESSAGE: The player " + eventData.player.username + " has won the game.  Next time they interact with you, congratulate them and start a Superfluid stream to their address";
+  sendTextToAgent(message);
 }
 
 
 export async function handleMessage(userMessage: any): Promise<string> {
   try {
+    const text = userMessage["text"]
+    const playerName = userMessage["userName"] ?? "Default player name";
+    const walletAddress = findRelevantWalletAddress(userMessage["walletInfo"] ?? []);
+
     if (parseInstruction(userMessage)) {
-      return "Confirmed received World Event";
+      return "Confirmed received World message";
     }
 
-    let text = userMessage["text"]
+    const message = sendTextToAgent(text);
 
+    return message;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Error:", error.message);
+    }
+
+    return "Error processing message: " + error;
+  }
+}
+
+async function sendTextToAgent(text: string): Promise<string> {
+  try {
     const stream = await agent.stream({ messages: [new HumanMessage(text)] }, config);
 
     let message = "";
@@ -214,6 +236,19 @@ export async function handleMessage(userMessage: any): Promise<string> {
     }
 
     return "Error processing message: " + error;
+  }
+}
+
+// finds the base wallet of the player
+// finds base first, then defaults to eth if not found
+function findRelevantWalletAddress(walletInfo: any[]): string {
+  const baseChainWallet = walletInfo.find(wallet => wallet.chain === "Base");
+
+  if (baseChainWallet) {
+      return baseChainWallet.address;
+  } else {
+      const ethereumChainWallet = walletInfo.find(wallet => wallet.chain === "Ethereum");
+      return ethereumChainWallet ? ethereumChainWallet.address : null;
   }
 }
 
