@@ -121,7 +121,7 @@ Represents a player object with a `userId` and `username`.
 ```
 
 ## Standard
-The `ready-agent-one` standard supports 2 primary messages, defined as `WorldMessage`:
+The `ready-agent-one` standard supports 2 primary messages, defined as `WorldMessage`s:
 - `WorldTick`
 - `WorldEvent`
 
@@ -141,7 +141,7 @@ Below are the currently supported events, with eventData contexts:
 | `PLAYER_WON`    | `{ player: Player, score: numer, game: string }`    |
 | `GAME_COMPLETED_EVENT`    | `{ rank: Player[], game: string }`    |
 
-While some events are standardized and included in this package, any event name can be manually added and configured.
+While some events are standardized and included in this package, any event name can be manually added and configured (as long as the game supports it).
 
 ```ts
 registerEventAction("CUSTOM_EVENT_NAME", OnCustomEventCallback)
