@@ -50,10 +50,7 @@ export interface WorldEventBase {
  */
 export interface PlayerEnterEvent extends WorldEventBase {
     event: typeof PLAYER_ENTER_EVENT;
-    eventData: {
-        player: Player,
-        zoneId: string
-    };
+    eventData: PlayerEnterExitEventData;
 }
 
 /**
@@ -62,10 +59,12 @@ export interface PlayerEnterEvent extends WorldEventBase {
  */
 export interface PlayerExitEvent extends WorldEventBase {
     event: typeof PLAYER_EXIT_EVENT;
-    eventData: {
-        player: Player,
-        zoneId: string
-    };
+    eventData: PlayerEnterExitEventData;
+}
+
+export interface PlayerEnterExitEventData {
+    player: Player,
+    zoneId: string
 }
 
 /**
