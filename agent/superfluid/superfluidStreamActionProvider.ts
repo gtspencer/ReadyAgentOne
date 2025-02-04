@@ -25,6 +25,10 @@ export class SuperfluidStreamActionProvider extends ActionProvider<EvmWalletProv
 
   }
 
+  getStreamLink = (network: Network, tokenAddress: string, senderAddress: string, recipientAddress: string) => {
+    //schema https://app.superfluid.finance/stream/base-sepolia/0x2e5ed14144d0682ce1929c47ceeccbef6ed7ff5c-0x930b9cc24c46c341803e5fefb3590bdb4ff576a6-0x7635356d54d8af3984a5734c2be9e25e9abc2ebc
+    return `https://app.superfluid.finance/stream/${network.networkId}/${senderAddress}-${recipientAddress}-${tokenAddress}`
+  }
   /**
    * Creates a stream from the agent wallet to the recipient
    *
@@ -58,9 +62,10 @@ Do not use the ERC20 address as the destination address. If you are unsure of th
         data,
       });
 
+
       await walletProvider.waitForTransactionReceipt(hash);
 
-      return `Created stream of token ${args.erc20TokenAddress} to ${args.recipientAddress} at a rate of ${args.flowRate}`;
+      return `Created stream of token ${args.erc20TokenAddress} to ${args.recipientAddress} at a rate of ${args.flowRate}. The link to the stream is ${this.getStreamLink(walletProvider.getNetwork(), args.erc20TokenAddress, walletProvider.getAddress(), args.recipientAddress)}`;
     } catch (error) {
       return `Error creating Superfluid stream: ${error}`;
     }
