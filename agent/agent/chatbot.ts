@@ -230,7 +230,13 @@ async function OnPlayerWon(eventData: any) {
 }
 
 async function OngameCompleted(eventData: any) {
-  const winner = eventData.players[0].username;
+  const winner = eventData.rank[0].username || "";
+  if (winner == "") {
+    return;
+  }
+
+  const message = "SERVERMESSAGE: The player " + eventData.rank[0].username + " has won the game.  Next time they interact with you, congratulate them and start a Superfluid stream to their address";
+  sendTextToAgent(message);
 }
 
 
