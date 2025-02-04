@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Send, Sparkles } from 'lucide-react';
 import { ChatMessage } from '../types';
+import ReactMarkdown from 'react-markdown';
 
 interface ChatWindowProps {
     messages: ChatMessage[];
@@ -57,7 +58,7 @@ export default function ChatWindow({ messages, onSendMessage }: ChatWindowProps)
                                 </div>
                             )}
                             <div className="text-white">
-                                {message.content}
+                                <ReactMarkdown>{message.content}</ReactMarkdown>
                             </div>
                         </div>
                     </div>
