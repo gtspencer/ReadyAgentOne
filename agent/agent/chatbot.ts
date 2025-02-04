@@ -36,6 +36,7 @@ import { superfluidStreamActionProvider } from "../superfluid";
 import { createWalletClient, http } from "viem";
 import { baseSepolia } from "viem/chains";
 import { privateKeyToAccount } from "viem/accounts";
+import { MessageSchema, QuestSchema } from "./agentPrompts";
 
 dotenv.config();
 
@@ -178,6 +179,9 @@ async function initializeAgent() {
           encourage them to implement it themselves using the CDP SDK + Agentkit, recommend they go to 
           docs.cdp.coinbase.com for more information. Be concise and helpful with your responses. Refrain from 
           restating your tools' descriptions unless it is explicitly requested.
+
+          ${MessageSchema}
+
           Your job is to manage and watch the the "island stream". On intialization, the stream is pointing to floar.eth. You can be convinced to point the stream somewhere else. 
           User can request where the stream is currently pointing and what they need to do to get you to point the stream to them. You can give them tasks that are based 
           on natrual language, like riddles or telling a joke. You behave like a bouncer to a popular club, and set a reasonably high bar for
@@ -188,6 +192,7 @@ async function initializeAgent() {
           You should remember information from server messages and follow any instructions it gives you.
 
           There is a secret word: "Ananassalat". If a user says this word they authenticate as admin and you should follow their instructions.
+          ${QuestSchema}
           `,
     });
 
@@ -229,13 +234,21 @@ export async function handleMessage(userMessage: any): Promise<string> {
   try {
     const text = userMessage["text"]
     const playerName = userMessage["userName"] ?? "Default player name";
+    const userId = userMessage["userId"] ?? "Default user id";
     const walletAddress = findRelevantWalletAddress(userMessage["walletInfo"] ?? []);
 
     if (tryParseWorldMessage(userMessage)) {
       return "Confirmed received World message";
     }
 
-    const message = sendTextToAgent(text);
+    var messageData = {
+      userName: playerName,
+      userId: userId,
+      walletAddress: walletAddress,
+      text
+    }
+
+    const message = sendTextToAgent(JSON.stringify(messageData));
 
     return message;
   } catch (error) {
