@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 import {
   SuperfluidCreateStreamSchema,
   SuperfluidDeleteStreamSchema
@@ -9,7 +8,11 @@ import {
   CFAv1ForwarderABI,
 } from "./constants";
 import { encodeFunctionData, Hex } from "viem";
-import { ActionProvider, WalletProvider, CreateAction, EvmWalletProvider, Network } from "@coinbase/agentkit";
+import {
+  ActionProvider,
+  CreateAction,
+  EvmWalletProvider,
+  Network } from "@coinbase/agentkit";
 
 
 /**
@@ -25,10 +28,13 @@ export class SuperfluidStreamActionProvider extends ActionProvider<EvmWalletProv
 
   }
 
+  /**
+   * Gets the link to the Superfluid dashboard pertaining to the stream
+   */
   getStreamLink = (network: Network, tokenAddress: string, senderAddress: string, recipientAddress: string) => {
-    //schema https://app.superfluid.finance/stream/base-sepolia/0x2e5ed14144d0682ce1929c47ceeccbef6ed7ff5c-0x930b9cc24c46c341803e5fefb3590bdb4ff576a6-0x7635356d54d8af3984a5734c2be9e25e9abc2ebc
     return `https://app.superfluid.finance/stream/${network.networkId}/${senderAddress}-${recipientAddress}-${tokenAddress}`
   }
+
   /**
    * Creates a stream from the agent wallet to the recipient
    *
