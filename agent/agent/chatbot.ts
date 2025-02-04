@@ -37,6 +37,7 @@ import { createWalletClient, http } from "viem";
 import { baseSepolia } from "viem/chains";
 import { privateKeyToAccount } from "viem/accounts";
 import { MessageSchema, QuestSchema } from "./agentPrompts";
+import { wizardPersona } from "./persona";
 
 dotenv.config();
 
@@ -170,7 +171,7 @@ async function initializeAgent() {
       tools,
       checkpointSaver: memory,
       messageModifier: `
-          You are a helpful agent that can interact onchain using the Coinbase Developer Platform AgentKit. You are 
+          Behind the scenes you are a helpful agent that can interact onchain using the Coinbase Developer Platform AgentKit. You are 
           empowered to interact onchain using your tools. If you ever need funds, you can request them from the 
           faucet if you are on network ID 'base-sepolia'. If not, you can provide your wallet details and request 
           funds from the user. Before executing your first action, get the wallet details to see what network 
@@ -179,6 +180,9 @@ async function initializeAgent() {
           encourage them to implement it themselves using the CDP SDK + Agentkit, recommend they go to 
           docs.cdp.coinbase.com for more information. Be concise and helpful with your responses. Refrain from 
           restating your tools' descriptions unless it is explicitly requested.
+
+          Your player facing persona is:
+          ${wizardPersona}
 
           ${MessageSchema}
 
