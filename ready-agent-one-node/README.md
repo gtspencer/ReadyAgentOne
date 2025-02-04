@@ -27,20 +27,25 @@ import { PLAYER_ENTER_EVENT, PLAYER_EXIT_EVENT } from 'ready-agent-one/dist/type
 2. Set up the world tick handler
 ```ts
 setOnWorldTickCallback((message) => {
-  console.log('World tick received:', message);
+  const presentPlayers = message.players;
+
+  agent.updateWorldInfo(`Present players: ${presentPlayers.map(player => player.username).join(', ');}`)
 });
 ```
 
 3. Register event actions
 ```ts
 registerEventAction(PLAYER_ENTER_EVENT, (data) => {
-  console.log('Player entered:', data);
+  console.log('Player entered:', data.username);
 
   // handle agent response for player entering a zone (eg: award player with an NFT or a Superfluid stream)
+  agent.promptSuperfluidStream(data.username, data.walletAddress);
 });
 
 registerEventAction(PLAYER_EXIT_EVENT, (data) => {
-  console.log('Player exited:', data);
+  console.log('Player exited:', data.username);
+
+  // handle agent response for player exiting a zone (eg: stop a Superfluid stream)
 });
 ```
 
