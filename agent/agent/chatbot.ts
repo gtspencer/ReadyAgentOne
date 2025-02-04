@@ -120,7 +120,7 @@ async function initializeAgent() {
     // Create a Viem wallet client - this example uses a hardcoded private key
     // In production, use secure key management!
     const account = privateKeyToAccount(
-      "0xc8340ff0ecf7e3edef9d96e9310aed5d69128ee2dd2726f0ce83ef38f9413673",
+      process.env.PRIVATE_KEY as `0x${string}` || "0x000" as `0x${string}`,
     );
 
     const client = createWalletClient({
