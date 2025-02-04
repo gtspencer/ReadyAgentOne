@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import { startAgent, handleMessage } from './chatbot';
 import cors from 'cors';
 import dotenv from "dotenv";
+import { WebSocketServer } from 'ws';
 
 dotenv.config();
 
@@ -28,9 +29,12 @@ app.post("/readyagentone", async (req: Request, res: Response) => {
 
     var response = await handleMessage(data);
     console.log('Agent response: ' + response)
+    // try parse as {text:string , action:string}
+    var parsed = JSON.parse(response);
+    response = parsed.text;
+    var action = parsed.action;
 
-    var action = inferAction(response);
-    console.log('Inferred action: ' + action)
+    broadcast({ action });
 
     res.status(200).json(
         {
@@ -49,7 +53,25 @@ function inferAction(agentResponse: string): string {
 
 // Start the server
 const PORT = 3000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
     startAgent().then(() => console.log(`Agent started`));
 });
+
+// WebSocket server setup
+const wss = new WebSocketServer({ server });
+
+wss.on('connection', (ws) => {
+    console.log('Client connected');
+    ws.on('close', () => {
+        console.log('Client disconnected');
+    });
+});
+
+function broadcast(data: any) {
+    wss.clients.forEach((client) => {
+        if (client.readyState === client.OPEN) {
+            client.send(JSON.stringify(data));
+        }
+    });
+}

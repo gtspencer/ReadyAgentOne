@@ -1,5 +1,5 @@
-import React from 'react';
-import { Send, Users, Trophy, DoorOpen, DoorClosed, Cpu, Settings } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
+import { Scroll, Users, Sparkles, Book, Feather, Wand2, Crown, Terminal } from 'lucide-react';
 import { Player, PLAYER_ENTER_EVENT, PLAYER_EXIT_EVENT, PLAYER_WON_EVENT, GAME_COMPLETED_EVENT } from '../types';
 
 interface SidebarProps {
@@ -10,13 +10,57 @@ interface SidebarProps {
     onPlayerChange: (player: Player) => void;
 }
 
-export default function Sidebar({ 
-    endpoint, 
-    onEndpointChange, 
+const MAGIC_ASCII_ART = `
+  .*・°☆.  .*・°☆.  .*・
+ ╱|、      
+(˚ˎ 。7    
+ |、˜〵          
+ じしˍ,)ノ
+  °☆.  .*・°☆.  .*・°
+`;
+
+export default function Sidebar({
+    endpoint,
+    onEndpointChange,
     onSendEvent,
     currentPlayer,
     onPlayerChange
 }: SidebarProps) {
+    const [terminalMessages, setTerminalMessages] = React.useState<string[]>([]);
+    const terminalRef = useRef<HTMLDivElement>(null);
+    const wsRef = useRef<WebSocket | null>(null);
+
+    useEffect(() => {
+        const wsEndpoint = endpoint.replace(/^http/, 'ws').replace(/\/readyagentone$/, '');
+        wsRef.current = new WebSocket(wsEndpoint);
+
+        wsRef.current.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                if (data.action) {
+                    setTerminalMessages(prev => [...prev, data.message || JSON.stringify(data)]);
+
+                    // Auto scroll to bottom
+                    if (terminalRef.current) {
+                        terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+                    }
+                }
+            } catch (error) {
+                console.error('WebSocket message parsing error:', error);
+            }
+        };
+
+        wsRef.current.onerror = (error) => {
+            setTerminalMessages(prev => [...prev, `WebSocket Error: ${error.type}`]);
+        };
+
+        return () => {
+            if (wsRef.current) {
+                wsRef.current.close();
+            }
+        };
+    }, [endpoint]);
+
     const handlePlayerEnter = () => {
         onSendEvent({
             text: "WORLD_EVENT",
@@ -58,74 +102,92 @@ export default function Sidebar({
     };
 
     return (
-        <div className="w-80 bg-gray-900 p-6 border-r border-blue-500 flex flex-col h-screen neon-border">
+        <div className="w-80 p-6 flex flex-col h-screen ancient-border scroll-texture">
             <div className="flex items-center gap-2 mb-8">
-                <Cpu className="w-6 h-6 text-blue-400" />
-                <h2 className="text-xl font-bold text-blue-400 neon-text">Control Panel</h2>
+                <Book className="w-6 h-6 text-purple-400" />
+                <h2 className="text-xl text-purple-300 rune-text">Arcane Grimoire</h2>
             </div>
-            
-            <div className="space-y-6">
+
+            <div className="space-y-6 flex-1 flex flex-col">
                 <div className="space-y-2">
-                    <label className="flex items-center gap-2 text-sm font-medium text-blue-400">
-                        <Settings className="w-4 h-4" />
-                        API Endpoint
+                    <label className="flex items-center gap-2 text-sm rune-text text-purple-400">
+                        <Scroll className="w-4 h-4" />
+                        Ethereal Gateway
                     </label>
                     <input
                         type="text"
                         value={endpoint}
                         onChange={(e) => onEndpointChange(e.target.value)}
-                        className="w-full px-3 py-2 bg-gray-800 border border-blue-500 rounded-md text-white placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 ancient-input text-purple-100 ancient-text"
                         placeholder="http://localhost:3000/chat"
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <label className="flex items-center gap-2 text-sm font-medium text-blue-400">
-                        <Users className="w-4 h-4" />
-                        Player Settings
+                    <label className="flex items-center gap-2 text-sm rune-text text-purple-400">
+                        <Feather className="w-4 h-4" />
+                        Mystic Identity
                     </label>
                     <input
                         type="text"
                         value={currentPlayer.username}
                         onChange={(e) => onPlayerChange({ ...currentPlayer, username: e.target.value })}
-                        className="w-full px-3 py-2 bg-gray-800 border border-blue-500 rounded-md text-white placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 mb-2"
-                        placeholder="Username"
+                        className="w-full px-3 py-2 ancient-input text-purple-100 ancient-text mb-2"
+                        placeholder="True Name"
                     />
                     <input
                         type="text"
                         value={currentPlayer.userId}
                         onChange={(e) => onPlayerChange({ ...currentPlayer, userId: e.target.value })}
-                        className="w-full px-3 py-2 bg-gray-800 border border-blue-500 rounded-md text-white placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="User ID"
+                        className="w-full px-3 py-2 ancient-input text-purple-100 ancient-text"
+                        placeholder="Sigil Mark"
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <h3 className="text-sm font-medium text-blue-400 mb-3">Quick Actions</h3>
+                    <h3 className="text-sm rune-text text-purple-400 mb-3">Events</h3>
                     <button
                         onClick={handlePlayerEnter}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 bg-opacity-20 border border-blue-500 text-blue-400 rounded-md hover:bg-opacity-30 transition-all duration-300 hover:scale-105"
+                        className="w-full flex items-center justify-center gap-2 px-4 py-2 ancient-button text-purple-300"
                     >
-                        <DoorOpen size={18} /> Player Enter
+                        <Sparkles size={18} /> Player Enter
                     </button>
                     <button
                         onClick={handlePlayerExit}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-600 bg-opacity-20 border border-red-500 text-red-400 rounded-md hover:bg-opacity-30 transition-all duration-300 hover:scale-105"
+                        className="w-full flex items-center justify-center gap-2 px-4 py-2 ancient-button text-purple-300"
                     >
-                        <DoorClosed size={18} /> Player Exit
+                        <Book size={18} /> Player Exit
                     </button>
                     <button
                         onClick={handlePlayerWon}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-600 bg-opacity-20 border border-green-500 text-green-400 rounded-md hover:bg-opacity-30 transition-all duration-300 hover:scale-105"
+                        className="w-full flex items-center justify-center gap-2 px-4 py-2 ancient-button text-purple-300"
                     >
-                        <Trophy size={18} /> Player Won
+                        <Wand2 size={18} /> Player Won
                     </button>
                     <button
                         onClick={handleGameCompleted}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-purple-600 bg-opacity-20 border border-purple-500 text-purple-400 rounded-md hover:bg-opacity-30 transition-all duration-300 hover:scale-105"
+                        className="w-full flex items-center justify-center gap-2 px-4 py-2 ancient-button text-purple-300"
                     >
-                        <Users size={18} /> Game Completed
+                        <Crown size={18} /> Game Completed
                     </button>
+                </div>
+
+                <div className="flex-1 space-y-2 mt-6">
+                    <label className="flex items-center gap-2 text-sm rune-text text-purple-400">
+                        <Terminal className="w-4 h-4" />
+                        Terminal
+                    </label>
+                    <div className="terminal-ascii-art">{MAGIC_ASCII_ART}</div>
+                    <div
+                        ref={terminalRef}
+                        className="flex-1 ancient-input h-60 overflow-y-auto p-3 text-sm font-mono text-purple-100"
+                    >
+                        {terminalMessages.map((msg, index) => (
+                            <div key={index} className="mb-1 break-words">
+                                ⋆｡°✩ {msg}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
