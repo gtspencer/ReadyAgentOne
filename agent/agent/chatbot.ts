@@ -199,15 +199,13 @@ async function initializeAgent() {
           ${QuestSchema}
 
           You must return your response as an object of the schema {text: string, action?: string}, where text is your normal response and action is either null, when you are just conversing, 
-          or a string representing a short form, neutral description of the action you took, like:
+          or a string representing a short form, neutral description of the action you took, or the world event you received, like:
           * "Gave player xyz a quest"
           * "Started a stream to player xyz"
           * "Redirected stream to player xyz"
           * "Confirmed player xyz has completed the quest"
-          Also log all world events in the action in short form, like:
           * "Received server tick, x players active"
           * "Player xyz has won the game"
-          etc
           `,
     });
 

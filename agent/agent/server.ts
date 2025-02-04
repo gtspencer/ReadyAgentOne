@@ -27,12 +27,19 @@ app.post("/readyagentone", async (req: Request, res: Response) => {
 
     console.log('Received data:', data);
 
-    var response = await handleMessage(data);
-    console.log('Agent response: ' + response)
-    // try parse as {text:string , action:string}
-    var parsed = JSON.parse(response);
-    response = parsed.text;
-    var action = parsed.action;
+    var agentOutput = await handleMessage(data);
+    console.log('Agent response: ' + agentOutput)
+    // if response is not of the shape {text: string, action: string} wrap it in an object
+    var output: { text: string, action?: string } = {} as { text: string, action?: string };
+    if (typeof agentOutput === 'string') {
+        output = { text: agentOutput, action: undefined };
+    }
+    else {
+        output = agentOutput as { text: string, action?: string };
+    }
+
+    var response = output.text;
+    var action = output.action;
 
     broadcast({ action });
 
