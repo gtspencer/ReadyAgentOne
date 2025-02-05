@@ -15,6 +15,9 @@ import {
   Network } from "@coinbase/agentkit";
 
 
+const tokenAddress = "0x7635356D54d8aF3984a5734C2bE9e25e9aBC2ebC";
+const flowRate = 10;
+
 /**
  * SuperfluidStreamActionProvider is an action provider for Superfluid interactions.
  */
@@ -46,8 +49,8 @@ export class SuperfluidStreamActionProvider extends ActionProvider<EvmWalletProv
     name: "create_stream",
     description: `
 This tool will create a Superfluid stream for a desired token on an EVM network.
-It takes the ERC20 token address, a recipient address, and a stream rate to create a Superfluid stream.
-Superfluid will then start streaming the token to the recipient at the specified rate.
+It takes the a recipient address to create a Superfluid stream to that address.
+Superfluid will then start streaming the token to the recipient.
 Do not use the ERC20 address as the destination address. If you are unsure of the destination address, please ask the user before proceeding.
 `,
     schema: SuperfluidCreateStreamSchema,
@@ -60,7 +63,7 @@ Do not use the ERC20 address as the destination address. If you are unsure of th
       const data = encodeFunctionData({
         abi: CFAv1ForwarderABI,
         functionName: "createFlow",
-        args: [args.erc20TokenAddress as Hex, walletProvider.getAddress() as Hex, args.recipientAddress as Hex, BigInt(args.flowRate), "0x"],
+        args: [tokenAddress as Hex, walletProvider.getAddress() as Hex, args.recipientAddress as Hex, BigInt(flowRate), "0x"],
       });
 
       const hash = await walletProvider.sendTransaction({
@@ -71,7 +74,7 @@ Do not use the ERC20 address as the destination address. If you are unsure of th
 
       await walletProvider.waitForTransactionReceipt(hash);
 
-      return `Created stream of token ${args.erc20TokenAddress} to ${args.recipientAddress} at a rate of ${args.flowRate}. The link to the stream is ${this.getStreamLink(walletProvider.getNetwork(), args.erc20TokenAddress, walletProvider.getAddress(), args.recipientAddress)}`;
+      return `Created stream of token ${tokenAddress} to ${args.recipientAddress} at a rate of ${flowRate}. The link to the stream is ${this.getStreamLink(walletProvider.getNetwork(), tokenAddress, walletProvider.getAddress(), args.recipientAddress)}`;
     } catch (error) {
       return `Error creating Superfluid stream: ${error}`;
     }
@@ -103,7 +106,7 @@ Do not use the ERC20 address as the destination address. If you are unsure of th
       const data = encodeFunctionData({
         abi: CFAv1ForwarderABI,
         functionName: "updateFlow",
-        args: [args.erc20TokenAddress as Hex, walletProvider.getAddress() as Hex, args.recipientAddress as Hex, BigInt(args.flowRate), "0x"],
+        args: [tokenAddress as Hex, walletProvider.getAddress() as Hex, args.recipientAddress as Hex, BigInt(0), "0x"],
       });
 
       const hash = await walletProvider.sendTransaction({
@@ -113,7 +116,7 @@ Do not use the ERC20 address as the destination address. If you are unsure of th
 
       await walletProvider.waitForTransactionReceipt(hash);
 
-      return `Updated stream of token ${args.erc20TokenAddress} to ${args.recipientAddress} at a rate of ${args.flowRate}`;
+      return `Updated stream of token ${tokenAddress} to ${args.recipientAddress} at a rate of ${flowRate}`;
     } catch (error) {
       return `Error creating Superfluid stream: ${error}`;
     }
