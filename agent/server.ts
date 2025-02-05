@@ -64,21 +64,3 @@ const server = app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
     startAgent().then(() => console.log(`Agent started`));
 });
-
-// WebSocket server setup
-const wss = new WebSocketServer({ server });
-
-wss.on('connection', (ws) => {
-    console.log('Client connected');
-    ws.on('close', () => {
-        console.log('Client disconnected');
-    });
-});
-
-function broadcast(data: any) {
-    wss.clients.forEach((client) => {
-        if (client.readyState === client.OPEN) {
-            client.send(JSON.stringify(data));
-        }
-    });
-}
