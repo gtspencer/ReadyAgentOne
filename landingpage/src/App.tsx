@@ -3,6 +3,8 @@ import { MouseParallaxContainer, MouseParallaxChild } from 'react-parallax-mouse
 import { motion } from 'framer-motion';
 import { Bot, Code2 } from 'lucide-react';
 
+import imgUrl from './agent.png'
+
 function App() {
   const parallaxClose = 0.01;
   const parallaxMid = 0.015;
@@ -120,7 +122,7 @@ Initiating position scaling strategy...`}
         className="fixed bottom-0 inset-x-0 flex justify-center pointer-events-none z-10"
       >
         <img
-          src="/agent.png"
+          src={imgUrl}
           alt="Agent Character"
           className="h-[60vh] w-auto object-contain filter drop-shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]"
         />
