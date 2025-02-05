@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Bot, Code2 } from 'lucide-react';
 
 import imgUrl from './agent.png'
+import backgroundUrl from './nifty.png'
 
 function App() {
   const parallaxClose = 0.01;
@@ -11,7 +12,20 @@ function App() {
   const parallaxFar = 0.02;
   return (
     <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#1d1d1f] relative">
+
+      <div className="absolute inset-0">
+        <img
+          src={backgroundUrl}
+          alt="Background"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-transparent to-gray-900" />
+      </div>
+
       <MouseParallaxContainer className="min-h-screen relative overflow-hidden">
+        <MouseParallaxChild factorX={parallaxClose} factorY={parallaxFar}>
+
+        </MouseParallaxChild>
         <div className="px-4 py-12 w-5/6 mx-auto">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -23,7 +37,11 @@ function App() {
               ReadyAgentOne
             </h1>
 
-            <h2 className="text-xl text-gray-500 dark:text-gray-400">[Agentic Hackathon 2025]</h2>
+            <h2 className="text-xl text-gray-500 dark:text-gray-400">
+              <a href="https://ethglobal.com/showcase/gaimer-7mytn" target="_blank" rel="noopener noreferrer">
+                [Agentic Hackathon 2025]
+              </a>
+            </h2>
 
           </motion.div>
 
@@ -124,9 +142,11 @@ Initiating position scaling strategy...`}
         <img
           src={imgUrl}
           alt="Agent Character"
-          className="h-[60vh] w-auto object-contain filter drop-shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+          className="h-[65vh] w-auto object-contain filter drop-shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]"
         />
       </motion.div>
+      {/* Background image with gradient overlay */}
+
     </div>
   );
 }
