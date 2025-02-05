@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 
 app.use(cors());
 
@@ -56,7 +56,7 @@ function inferAction(agentResponse: string): string {
 
 // Start the server
 const PORT = 3000;
-const server = app.listen(PORT, () => {
+export const server = app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
     startAgent().then(() => console.log(`Agent started`));
 });

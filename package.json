@@ -2,10 +2,9 @@
   "name": "agent",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./agent/index.ts",
   "scripts": {
-    "start": "ts-node ./agent/server.ts",
-    "local": "ts-node ./agent/chatbot.ts",
+    "start": "ts-node ./agent/index.ts",
     "build": "tsc"
   },
   "keywords": [],
