@@ -71,14 +71,27 @@ function App() {
             >
               <MouseParallaxChild factorX={parallaxClose} factorY={parallaxFar} className="relative -translate-y-6 left-10">
                 <div className="relative   playful-hover">
-                  <label className="flex items-center text-lg mb-3 text-gray-800 dark:text-white">
-                    <Bot className="mr-2" /> Agent Status
-                  </label>
+
                   <div className="rounded-2xl p-6 bg-white dark:bg-[#2d2d2f] shadow-[0_0_15px_rgba(0,0,0,0.05)] dark:shadow-[0_0_15px_rgba(0,0,0,0.2)]">
+                    <label className="flex items-center text-lg mb-3 text-gray-800 dark:text-white">
+                      <Bot className="mr-2" /> Reference Agent: Wizmar Q. Nimbleshanks
+                    </label>
                     <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                      Agent initialized and running in autonomous mode. Current objectives: analyze market trends,
-                      optimize trading strategies, and maintain portfolio balance. Neural pathways are operating
-                      at 94% efficiency. Memory allocation: 72% available.
+                      We created a reference agent using the ReadyAgentOne framework and  <a href="https://github.com/floAr/ReadyAgentOne/tree/main/ready-agent-one-node" target="_blank" rel="noopener noreferrer" className='playful-hover-small'>
+                        NiftyIsland 🔗</a>. The agent lives on an island ingame and will give players small quests upon speaking to him. By completing a quest the player earns the right to receive $ISLAND token streamed to their wallet
+                      using <a href="https://github.com/floAr/ReadyAgentOne/tree/main/ready-agent-one-node" target="_blank" rel="noopener noreferrer" className='playful-hover-small'>
+                        Superfluid 🔗</a>.<br />
+                      We enabled this by creating and adding a new action type to the Coinbase Agentkit to allow the agent to interact with the Superfluid protocol.<br />
+                      TODO: Add more details about the agent and the framework.
+
+                      <div className="flex space-x-4 justify-around mt-2">
+                        <a href="https://github.com/floAr/ReadyAgentOne/tree/main/agent/agent" target="_blank" rel="noopener noreferrer" className='playful-hover-small'>
+                          Github Agent 🔗
+                        </a>
+                        <a href="https://github.com/floAr/ReadyAgentOne/tree/main/agent/superfluid" target="_blank" rel="noopener noreferrer" className='playful-hover-small'>
+                          Github Superfluid Action 🔗
+                        </a>
+                      </div>
                     </p>
                   </div>
                 </div>
@@ -86,14 +99,25 @@ function App() {
 
               <MouseParallaxChild factorX={parallaxMid} factorY={parallaxMid} className="relative translate-y-6 right-10">
                 <div className="relative   playful-hover">
-                  <label className="flex items-center text-lg mb-3 text-gray-800 dark:text-white">
-                    <Code2 className="mr-2" /> Framework Parameters
-                  </label>
+
                   <div className="rounded-2xl p-6 bg-white dark:bg-[#2d2d2f] shadow-[0_0_15px_rgba(0,0,0,0.05)] dark:shadow-[0_0_15px_rgba(0,0,0,0.2)]">
+                    <label className="flex items-center text-lg mb-3 text-gray-800 dark:text-white">
+                      <Code2 className="mr-2" /> ReadyAgentOne Framework
+                    </label>
                     <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                      Framework v2.5.0 active with enhanced decision matrices. Risk tolerance: moderate.
-                      Trading pairs: BTC/USD, ETH/USD, SOL/USD. Automated position management enabled.
-                      Maximum drawdown limit: 12%. Current market sentiment analysis: bullish.
+
+                      ReadyAgentOne is a framework intended to be integrated at both a game and agent level to enable an agent to consume and meaningfully respond to in-game world events.<br />
+                      It sits on top of the agent layer and serves as an additional action space to enable the agent to respond to events from a game's authority.<br />
+                      In the framework we define a set of modifiable and extendible events as well as callbacks for the events that are easily integrable into existing Javascript agent frameworks.
+                      <div className="flex space-x-4 justify-around  mt-2">
+                        <a href="https://github.com/floAr/ReadyAgentOne/tree/main/ready-agent-one-node" target="_blank" rel="noopener noreferrer" className='playful-hover-small'>
+                          Github 🔗
+                        </a>
+                        <a href="https://www.npmjs.com/package/@0xspencer/ready-agent-one" target="_blank" rel="noopener noreferrer" className='playful-hover-small'>
+                          Npm 🔗
+                        </a>
+                      </div>
+
                     </p>
                   </div>
                 </div>
@@ -101,10 +125,11 @@ function App() {
 
               <MouseParallaxChild factorX={parallaxClose} factorY={parallaxMid} className="relative translate-y-6">
                 <div className="relative   playful-hover">
-                  <label className="flex items-center text-lg mb-3 text-gray-800 dark:text-white">
-                    <Code2 className="mr-2" /> Powered by
-                  </label>
+
                   <div className="rounded-2xl p-6 bg-white dark:bg-[#2d2d2f] shadow-[0_0_15px_rgba(0,0,0,0.05)] dark:shadow-[0_0_15px_rgba(0,0,0,0.2)]">
+                    <label className="flex items-center text-lg mb-3 text-gray-800 dark:text-white">
+                      <Code2 className="mr-2" /> Powered by
+                    </label>
                     <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                       Framework v2.5.0 active with enhanced decision matrices. Risk tolerance: moderate.
                       Trading pairs: BTC/USD, ETH/USD, SOL/USD. Automated position management enabled.
@@ -167,8 +192,8 @@ Initiating position scaling strategy...`}
           </MouseParallaxChild>
         </motion.div>
         {/* Background image with gradient overlay */}
-      </MouseParallaxContainer>
-    </div>
+      </MouseParallaxContainer >
+    </div >
   );
 }
 

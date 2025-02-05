@@ -24,7 +24,10 @@
 html,
 body {
     font-family: "Alagard", sans-serif;
+    text-align: justify;
+    font-size: large;
 }
+
 
 /* Enable crisp, pixelated rendering for images and elements */
 * {
@@ -103,6 +106,41 @@ select {
 
 .shadow-lg {
     box-shadow: 4px 4px #000;
+}
+
+.playful-hover:hover label {
+    position: relative;
+    overflow: hidden;
+}
+
+
+
+.playful-hover:hover label::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    transform: skewX(-20deg);
+    animation: shimmer 1.5s 1 forwards;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+.playful-hover:hover label {}
+
+.playful-hover:hover p {
+    color: white;
 }
 
 /* Add playful hover effect */
