@@ -1,12 +1,19 @@
 import { z } from "zod";
-
-import { SuperfluidCreatePoolSchema } from "./schemas";
+import { 
+  SuperfluidCreatePoolSchema,
+  SuperfluidUpdatePoolSchema
+} from "./schemas";
 import {
   GDAv1ForwarderAddress,
   GDAv1ForwarderABI
 } from "./constants";
 import { encodeFunctionData, Hex } from "viem";
-import { ActionProvider, CreateAction, EvmWalletProvider, Network } from "@coinbase/agentkit";
+import {
+  ActionProvider,
+  CreateAction,
+  EvmWalletProvider,
+  Network
+} from "@coinbase/agentkit";
 
 
 /**
@@ -62,6 +69,47 @@ Do not use the ERC20 address as the destination address. If you are unsure of th
 
       // todo store this poolAddress is memory so we can manipulate it later (we don't trust the llm to remember...)
       return `Created pool of token ${args.erc20TokenAddress} at ${poolAddress}`;
+    } catch (error) {
+      return `Error creating Superfluid pool: ${error}`;
+    }
+  }
+
+  /**
+   * Updates member units for a pool
+   *
+   * @param walletProvider - The wallet provider to start the pool from.
+   * @param args - The input arguments for the action.
+   * @returns A JSON string containing the account details or error message
+   */
+  @CreateAction({
+    name: "update_pool",
+    description: `
+This tool will update a Superfluid pool for a desired token on an EVM network.
+The pool must already have been created; this action merely updates the flow for a member of the pool.
+It takes the EVM address of the token pool contract that was created.
+Do not use the ERC20 address as the destination address. If you are unsure of the destination address, please ask the user before proceeding.
+`,
+    schema: SuperfluidUpdatePoolSchema,
+  })
+  async updatePool(
+    walletProvider: EvmWalletProvider,
+    args: z.infer<typeof SuperfluidUpdatePoolSchema>
+  ): Promise<string> {
+    try {
+      const data = encodeFunctionData({
+        abi: GDAv1ForwarderABI,
+        functionName: "updateMemberUnits",
+        args: [args.poolAddress as Hex, args.recipientAddress as Hex, BigInt(args.units), "0x"],
+      });
+
+      const hash = await walletProvider.sendTransaction({
+        to: GDAv1ForwarderAddress as `0x${string}`,
+        data,
+      });
+
+      const receipt = await walletProvider.waitForTransactionReceipt(hash);
+
+      return `Updated member units of pool ${args.poolAddress} for member ${args.recipientAddress}, with new member units ${args.units}`;
     } catch (error) {
       return `Error creating Superfluid pool: ${error}`;
     }
