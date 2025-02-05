@@ -60,12 +60,16 @@ wss.on('connection', (ws) => {
     ws.on('close', () => {
         console.log('Client disconnected');
     });
+    ws.on('error', (err) => {
+        console.log(`Websocket error: ${err.message}`);
+    });
 });
 function broadcast(data) {
     wss.clients.forEach((client) => {
         if (client.readyState === client.OPEN) {
             console.log('Broadcast client data');
             client.send(JSON.stringify(data));
+            client.send("TestMessage");
         }
     });
 }

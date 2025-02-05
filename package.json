@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@0xspencer/ready-agent-one": "^0.1.5",
     "@coinbase/agentkit": "^0.1.0",
     "@coinbase/agentkit-langchain": "^0.1.0",
     "@langchain/community": "^0.3.28",

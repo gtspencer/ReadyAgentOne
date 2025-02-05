@@ -13,13 +13,13 @@ import {
   tryParseWorldMessage,
   registerEventAction,
   setOnWorldTickCallback,
-} from "./ready-agent-one-node/src";
+} from "@0xspencer/ready-agent-one";
 import {
   WorldTick,
   PLAYER_WON_EVENT,
   GAME_COMPLETED_EVENT,
   PlayerWonEventData,
-} from "./ready-agent-one-node/src/types/shared-types";
+} from "@0xspencer/ready-agent-one";
 import { getLangChainTools } from "@coinbase/agentkit-langchain";
 import { HumanMessage } from "@langchain/core/messages";
 import { MemorySaver } from "@langchain/langgraph";
