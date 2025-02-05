@@ -41,8 +41,6 @@ app.post("/readyagentone", async (req: Request, res: Response) => {
     var response = output.text;
     var action = output.action;
 
-    broadcast({ action });
-
     res.status(200).json(
         {
             text: response,
