@@ -13,20 +13,20 @@ import {
   tryParseWorldMessage,
   registerEventAction,
   setOnWorldTickCallback,
-} from "../ready-agent-one-node/src";
+} from "./ready-agent-one-node/src";
 import {
   WorldTick,
   PLAYER_WON_EVENT,
   GAME_COMPLETED_EVENT,
   PlayerWonEventData,
-} from "../ready-agent-one-node/src/types/shared-types";
+} from "./ready-agent-one-node/src/types/shared-types";
 import { getLangChainTools } from "@coinbase/agentkit-langchain";
 import { HumanMessage } from "@langchain/core/messages";
 import { MemorySaver } from "@langchain/langgraph";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
 import * as dotenv from "dotenv";
-import { superfluidStreamActionProvider } from "../superfluid";
+import { superfluidStreamActionProvider } from "./superfluid";
 
 
 // Viem-related imports for wallet management
