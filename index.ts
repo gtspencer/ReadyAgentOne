@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import { startAgent, handleMessage } from './chatbot';
 import cors from 'cors';
 import dotenv from "dotenv";
+import { WebSocketServer } from 'ws';
 
 dotenv.config();
 
@@ -39,6 +40,8 @@ app.post("/readyagentone", async (req: Request, res: Response) => {
     var response = output.text;
     var action = output.action;
 
+    broadcast({ action });
+
     res.status(200).json(
         {
             text: response,
@@ -60,3 +63,21 @@ export const server = app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
     startAgent().then(() => console.log(`Agent started`));
 });
+
+// WebSocket server setup
+const wss = new WebSocketServer({ server });
+
+wss.on('connection', (ws) => {
+    console.log('Client connected');
+    ws.on('close', () => {
+        console.log('Client disconnected');
+    });
+});
+
+function broadcast(data: any) {
+    wss.clients.forEach((client) => {
+        if (client.readyState === client.OPEN) {
+            client.send(JSON.stringify(data));
+        }
+    });
+}

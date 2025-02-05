@@ -8,6 +8,7 @@ const express_1 = __importDefault(require("express"));
 const chatbot_1 = require("./chatbot");
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const ws_1 = require("ws");
 dotenv_1.default.config();
 exports.app = (0, express_1.default)();
 exports.app.use((0, cors_1.default)());
@@ -34,6 +35,7 @@ exports.app.post("/readyagentone", async (req, res) => {
     }
     var response = output.text;
     var action = output.action;
+    broadcast({ action });
     res.status(200).json({
         text: response,
         ...(action !== '' && { action })
@@ -51,3 +53,18 @@ exports.server = exports.app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
     (0, chatbot_1.startAgent)().then(() => console.log(`Agent started`));
 });
+// WebSocket server setup
+const wss = new ws_1.WebSocketServer({ server: exports.server });
+wss.on('connection', (ws) => {
+    console.log('Client connected');
+    ws.on('close', () => {
+        console.log('Client disconnected');
+    });
+});
+function broadcast(data) {
+    wss.clients.forEach((client) => {
+        if (client.readyState === client.OPEN) {
+            client.send(JSON.stringify(data));
+        }
+    });
+}
