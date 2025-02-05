@@ -83,7 +83,6 @@ function broadcast(data: any) {
         if (client.readyState === client.OPEN) {
             console.log('Broadcast client data')
             client.send(JSON.stringify(data));
-            client.send("TestMessage")
         }
     });
 }

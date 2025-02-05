@@ -36,8 +36,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleMessage = handleMessage;
 exports.startAgent = startAgent;
 const agentkit_1 = require("@coinbase/agentkit");
-const ready_agent_one_1 = require("@0xspencer/ready-agent-one");
-const ready_agent_one_2 = require("@0xspencer/ready-agent-one");
+const src_1 = require("./ready-agent-one-node/src");
+const shared_types_1 = require("./ready-agent-one-node/src/types/shared-types");
 const agentkit_langchain_1 = require("@coinbase/agentkit-langchain");
 const messages_1 = require("@langchain/core/messages");
 const langgraph_1 = require("@langchain/langgraph");
@@ -188,9 +188,9 @@ async function initializeAgent() {
     }
 }
 function initializeReadyAgentOne() {
-    (0, ready_agent_one_1.setOnWorldTickCallback)(OnWorldTick);
+    (0, src_1.setOnWorldTickCallback)(OnWorldTick);
     // registerEventAction(PLAYER_WON_EVENT, OnPlayerWon)
-    (0, ready_agent_one_1.registerEventAction)(ready_agent_one_2.GAME_COMPLETED_EVENT, OngameCompleted);
+    (0, src_1.registerEventAction)(shared_types_1.GAME_COMPLETED_EVENT, OngameCompleted);
 }
 async function OnWorldTick(message) {
     // Handle active players (maybe stream to them?)
@@ -216,7 +216,7 @@ async function handleMessage(userMessage) {
         const playerName = userMessage["userName"] ?? "Default player name";
         const userId = userMessage["userId"] ?? "Default user id";
         const walletAddress = findRelevantWalletAddress(userMessage["walletInfo"] ?? []);
-        if ((0, ready_agent_one_1.tryParseWorldMessage)(userMessage)) {
+        if ((0, src_1.tryParseWorldMessage)(userMessage)) {
             return sendTextToAgent(JSON.stringify(userMessage));
         }
         var messageData = {
