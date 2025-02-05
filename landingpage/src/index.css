@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide scrollbars for all elements */
+*::-webkit-scrollbar {
+    display: none;
+}
+
+* {
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
 @font-face {
     font-family: "Alagard";
     src: url("./alagard.ttf") format("truetype");
@@ -91,4 +103,21 @@ select {
 
 .shadow-lg {
     box-shadow: 4px 4px #000;
+}
+
+/* Add playful hover effect */
+.playful-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.playful-hover:hover {
+    transform: translateY(-5px) scale(1.1);
+}
+
+.playful-hover-small {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.playful-hover-small:hover {
+    transform: translateY(-5px) scale(1.02);
 }
