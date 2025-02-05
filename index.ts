@@ -8,6 +8,10 @@ dotenv.config();
 
 export const app = express();
 
+declare global {
+    var wss: any;
+}
+
 app.use(cors());
 
 // Middleware to parse JSON bodies
@@ -57,29 +61,34 @@ function inferAction(agentResponse: string): string {
     return "";
 }
 
+const wss = undefined;
+
 // Start the server
 const PORT = 3000;
 export const server = app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
     startAgent().then(() => console.log(`Agent started`));
-});
 
-// WebSocket server setup
-const wss = new WebSocketServer({ server });
+    const wss = new WebSocketServer({ server });
 
-wss.on('connection', (ws) => {
-    console.log('Client connected');
-    ws.on('close', () => {
-        console.log('Client disconnected');
+    globalThis.wss = wss;
+
+    wss.on('connection', (ws) => {
+        console.log('Client connected');
+        ws.on('close', () => {
+            console.log('Client disconnected');
+        });
+    
+        ws.on('error', (err) => {
+            console.log(`Websocket error: ${err.message}`)
+        })
     });
 
-    ws.on('error', (err) => {
-        console.log(`Websocket error: ${err.message}`)
-    })
+    
 });
 
 function broadcast(data: any) {
-    wss.clients.forEach((client) => {
+    globalThis.wss.clients.forEach((client) => {
         if (client.readyState === client.OPEN) {
             console.log('Broadcast client data')
             client.send(JSON.stringify(data));
@@ -87,3 +96,5 @@ function broadcast(data: any) {
         }
     });
 }
+
+// WebSocket server setup

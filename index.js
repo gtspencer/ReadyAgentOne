@@ -47,25 +47,31 @@ exports.app.post("/readyagentone", async (req, res) => {
 function inferAction(agentResponse) {
     return "";
 }
+const wss = undefined;
 // Start the server
 const PORT = 3000;
 exports.server = exports.app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
     (0, chatbot_1.startAgent)().then(() => console.log(`Agent started`));
-});
-// WebSocket server setup
-const wss = new ws_1.WebSocketServer({ server: exports.server });
-wss.on('connection', (ws) => {
-    console.log('Client connected');
-    ws.on('close', () => {
-        console.log('Client disconnected');
+    const wss = new ws_1.WebSocketServer({ server: exports.server });
+    globalThis.wss = wss;
+    wss.on('connection', (ws) => {
+        console.log('Client connected');
+        ws.on('close', () => {
+            console.log('Client disconnected');
+        });
+        ws.on('error', (err) => {
+            console.log(`Websocket error: ${err.message}`);
+        });
     });
 });
 function broadcast(data) {
-    wss.clients.forEach((client) => {
+    globalThis.wss.clients.forEach((client) => {
         if (client.readyState === client.OPEN) {
             console.log('Broadcast client data');
             client.send(JSON.stringify(data));
+            client.send("TestMessage");
         }
     });
 }
+// WebSocket server setup
