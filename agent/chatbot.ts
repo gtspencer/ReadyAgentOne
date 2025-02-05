@@ -13,13 +13,13 @@ import {
   tryParseWorldMessage,
   registerEventAction,
   setOnWorldTickCallback,
-} from "ready-agent-one/src";
+} from "../ready-agent-one-node/src";
 import {
   WorldTick,
   PLAYER_WON_EVENT,
   GAME_COMPLETED_EVENT,
   PlayerWonEventData,
-} from "ready-agent-one/src/types/shared-types";
+} from "../ready-agent-one-node/src/types/shared-types";
 import { getLangChainTools } from "@coinbase/agentkit-langchain";
 import { HumanMessage } from "@langchain/core/messages";
 import { MemorySaver } from "@langchain/langgraph";
@@ -27,8 +27,6 @@ import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
 import * as dotenv from "dotenv";
 import * as fs from "fs";
-import * as readline from "readline";
-import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { superfluidStreamActionProvider } from "../superfluid";
 
 
