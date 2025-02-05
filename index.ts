@@ -87,11 +87,13 @@ export const server = app.listen(PORT, () => {
     
 });
 
-function broadcast(data: any) {
-    globalThis.wss.clients.forEach((client) => {
+async function broadcast(data: any) {
+    globalThis.wss.clients.forEach(async (client) => {
         if (client.readyState === client.OPEN) {
+            const temp = await JSON.stringify(data);
             console.log('Broadcast client data')
-            client.send(JSON.stringify(data));
+            console.log(temp)
+            client.send(temp);
             client.send("TestMessage");
         }
     });
