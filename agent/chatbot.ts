@@ -26,7 +26,6 @@ import { MemorySaver } from "@langchain/langgraph";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
 import * as dotenv from "dotenv";
-import * as fs from "fs";
 import { superfluidStreamActionProvider } from "../superfluid";
 
 
@@ -74,9 +73,6 @@ function validateEnvironment(): void {
 // Add this right after imports and before any other code
 validateEnvironment();
 
-// Configure a file to persist the agent's CDP MPC Wallet Data
-const WALLET_DATA_FILE = "wallet_data.txt";
-
 declare global {
   var agent: any;
   var config: any;
@@ -95,23 +91,10 @@ async function initializeAgent() {
       apiKey: process.env.OPENAI_API_KEY,
     });
 
-    let walletDataStr: string | null = null;
-
-    // Read existing wallet data if available
-    if (fs.existsSync(WALLET_DATA_FILE)) {
-      try {
-        walletDataStr = fs.readFileSync(WALLET_DATA_FILE, "utf8");
-      } catch (error) {
-        console.error("Error reading wallet data:", error);
-        // Continue without wallet data
-      }
-    }
-
     // Configure CDP Wallet Provider
     const config = {
       apiKeyName: process.env.CDP_API_KEY_NAME,
       apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-      cdpWalletData: walletDataStr || undefined,
       networkId: process.env.NETWORK_ID || "base-sepolia",
     };
 
@@ -131,9 +114,6 @@ async function initializeAgent() {
 
     // Create a wallet provider that AgentKit can use
     const walletProvider = new ViemWalletProvider(client);
-
-
-
 
     // Initialize AgentKit
     const agentkit = await AgentKit.from({

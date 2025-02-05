@@ -2,12 +2,10 @@ import express, { Express, Request, Response } from 'express';
 import { startAgent, handleMessage } from './chatbot';
 import cors from 'cors';
 import dotenv from "dotenv";
-import { WebSocketServer } from 'ws';
 
 dotenv.config();
 
 const app = express();
-
 
 app.use(cors());
 
