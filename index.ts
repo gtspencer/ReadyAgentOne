@@ -77,6 +77,7 @@ wss.on('connection', (ws) => {
 function broadcast(data: any) {
     wss.clients.forEach((client) => {
         if (client.readyState === client.OPEN) {
+            console.log('Broadcast client data')
             client.send(JSON.stringify(data));
         }
     });
