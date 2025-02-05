@@ -72,6 +72,10 @@ wss.on('connection', (ws) => {
     ws.on('close', () => {
         console.log('Client disconnected');
     });
+
+    ws.on('error', (err) => {
+        console.log(`Websocket error: ${err.message}`)
+    })
 });
 
 function broadcast(data: any) {
