@@ -23,9 +23,6 @@ function App() {
       </div>
 
       <MouseParallaxContainer className="min-h-screen relative overflow-hidden">
-        <MouseParallaxChild factorX={parallaxClose} factorY={parallaxFar}>
-
-        </MouseParallaxChild>
         <div className="px-4 py-12 w-5/6 mx-auto">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
