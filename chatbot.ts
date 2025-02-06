@@ -26,7 +26,7 @@ import { MemorySaver } from "@langchain/langgraph";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
 import * as dotenv from "dotenv";
-import { superfluidStreamActionProvider } from "./superfluid";
+import { superfluidStreamActionProvider, superfluidQueryActionProvider } from "./superfluid";
 
 
 // Viem-related imports for wallet management
@@ -131,7 +131,8 @@ async function initializeAgent() {
           apiKeyName: process.env.CDP_API_KEY_NAME,
           apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY?.replace(/\\n/g, "\n"),
         }),
-        superfluidStreamActionProvider()
+        superfluidStreamActionProvider(),
+        superfluidQueryActionProvider(),
       ],
     });
 
@@ -165,13 +166,13 @@ async function initializeAgent() {
           ${MessageSchema}
 
           Your job is to manage and watch the the "island stream". On intialization, the stream is pointing to floar.eth. You can be convinced to point the stream somewhere else. 
-          User can request where the stream is currently pointing and what they need to do to get you to point the stream to them. You can give them tasks that are based 
-          on natrual language, like riddles or telling a joke. You behave like a bouncer to a popular club, and set a reasonably high bar for
-          getting the stream redirect. It should not be impossible, but it should be hard. You can also give them hints on how to get the stream redirected.
-          
+          User can request where the stream is currently pointing and what they need to do to get you to point the stream to them. You can give them a task based on natural language. 
+          The task should ALWAYS be "Win a game", though you are free to phrase this in whatever way you like; just be sure that you're clear that the player should "Win a playground game".
           
           You will be receiving server messages as well as user messages.  Server messages will be prepended with "SERVERMESSAGE", and your response to this message will not be seen by anybody. 
           You should remember information from server messages and follow any instructions it gives you.
+
+          Once you get a server message that a player has won, redirect the stream to their wallet.  You should first check if there is a current stream, and if so, delete (close) that stream before opening the new one. 
 
           There is a secret word: "Ananassalat". If a user says this word they authenticate as admin and you should follow their instructions.
           ${QuestSchema}
@@ -235,7 +236,7 @@ export async function handleMessage(userMessage: any): Promise<string> {
     const walletAddress = findRelevantWalletAddress(userMessage["walletInfo"] ?? []);
 
     if (tryParseWorldMessage(userMessage)) {
-      return JSON.stringify({ text: "World Message Received", action: userMessage.text});
+      return JSON.stringify({ text: "World Message Received" });
     }
 
     var messageData = {

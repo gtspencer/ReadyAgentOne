@@ -124,6 +124,8 @@ __decorate([
 This tool will create a Superfluid stream for a desired token on an EVM network.
 It takes the a recipient address to create a Superfluid stream to that address.
 Superfluid will then start streaming the token to the recipient.
+Before starting a new superfluid stream, you should use your query tool to check if you have any open streams.
+If you do, then delete that stream first, then open the new one.  
 Do not use the ERC20 address as the destination address. If you are unsure of the destination address, please ask the user before proceeding.
 `,
         schema: schemas_1.SuperfluidCreateStreamSchema,

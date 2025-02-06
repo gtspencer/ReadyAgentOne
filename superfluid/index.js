@@ -17,4 +17,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./schemas"), exports);
 __exportStar(require("./superfluidStreamActionProvider"), exports);
 __exportStar(require("./superfluidPoolActionProvider"), exports);
-// export * from "./superfluidQueryActionProvider";
+__exportStar(require("./superfluidQueryActionProvider"), exports);
