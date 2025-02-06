@@ -1,4 +1,32 @@
 import { ActionProvider, EvmWalletProvider, Network } from "@coinbase/agentkit";
+export declare const BASE_SEPOLIA_GRAPH_ENDPOINT = "https://subgraph-endpoints.superfluid.dev/base-sepolia/protocol-v1";
+export type SuperfluidAccountResponse = {
+    accounts: Account[];
+};
+type Account = {
+    isSuperApp: boolean;
+    inflows: Flow[];
+    outflows: Flow[];
+    accountTokenSnapshots: AccountTokenSnapshot[];
+};
+type Flow = {
+    currentFlowRate: string;
+    token: Token;
+    receiver: Receiver;
+};
+type Token = {
+    symbol?: string;
+    id?: string;
+};
+type Receiver = {
+    id: string;
+};
+type AccountTokenSnapshot = {
+    token: Token;
+    totalNumberOfActiveStreams: number;
+    totalNetFlowRate: string;
+};
+export declare const getAccountOutflowQuery: string;
 /**
  * SuperfluidQueryActionProvider is an action provider for Superfluid interactions.
  */
@@ -23,3 +51,4 @@ export declare class SuperfluidQueryActionProvider extends ActionProvider<EvmWal
     supportsNetwork: (network: Network) => boolean;
 }
 export declare const superfluidQueryActionProvider: () => SuperfluidQueryActionProvider;
+export {};

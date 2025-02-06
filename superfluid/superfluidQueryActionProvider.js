@@ -9,10 +9,62 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.superfluidQueryActionProvider = exports.SuperfluidQueryActionProvider = void 0;
+exports.superfluidQueryActionProvider = exports.SuperfluidQueryActionProvider = exports.getAccountOutflowQuery = exports.BASE_SEPOLIA_GRAPH_ENDPOINT = void 0;
+const graphql_request_1 = require("graphql-request");
 const schemas_1 = require("./schemas");
-const superfluidGraphQueries_1 = require("./graphQueries/superfluidGraphQueries");
+const graphql_request_2 = require("graphql-request");
 const agentkit_1 = require("@coinbase/agentkit");
+exports.BASE_SEPOLIA_GRAPH_ENDPOINT = "https://subgraph-endpoints.superfluid.dev/base-sepolia/protocol-v1";
+exports.getAccountOutflowQuery = (0, graphql_request_2.gql) `
+    query GetAccountData($id: ID!) {
+      accounts(where: { id: $id }) {
+        isSuperApp
+        inflows {
+          currentFlowRate
+          token {
+            symbol
+          }
+          sender {
+            id
+          }
+        }
+        outflows {
+          currentFlowRate
+          token {
+            symbol
+          }
+          receiver {
+            id
+          }
+        }
+        accountTokenSnapshots {
+          token {
+            id
+          }
+          totalNumberOfActiveStreams
+          totalNetFlowRate
+        }
+      }
+    }
+  `;
+const client = new graphql_request_1.GraphQLClient(exports.BASE_SEPOLIA_GRAPH_ENDPOINT);
+/**
+ * Gets the current account outflows for the user
+ *
+ * @param userId - The user id of the account
+ * @returns The data on the current streams from the agent
+ */
+async function getAccountOutflow(userId) {
+    try {
+        const variables = { id: userId.toLowerCase() };
+        const data = await client.request(exports.getAccountOutflowQuery, variables);
+        return data;
+    }
+    catch (error) {
+        console.error("Error fetching account data:", error);
+        return undefined;
+    }
+}
 /**
  * SuperfluidQueryActionProvider is an action provider for Superfluid interactions.
  */
@@ -38,7 +90,7 @@ class SuperfluidQueryActionProvider extends agentkit_1.ActionProvider {
      */
     async queryStreams(walletProvider) {
         try {
-            const accountData = await (0, superfluidGraphQueries_1.getAccountOutflow)(walletProvider.getAddress());
+            const accountData = await getAccountOutflow(walletProvider.getAddress());
             const outflows = accountData?.accounts?.length ? accountData?.accounts[0].outflows : [];
             const activeOutflows = outflows.filter(o => {
                 return parseInt(o.currentFlowRate) > 0;
