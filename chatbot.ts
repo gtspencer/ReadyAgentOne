@@ -26,7 +26,7 @@ import { MemorySaver } from "@langchain/langgraph";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
 import * as dotenv from "dotenv";
-import { superfluidStreamActionProvider, superfluidQueryActionProvider } from "./superfluid";
+import { superfluidStreamActionProvider } from "./superfluid";
 
 
 // Viem-related imports for wallet management
