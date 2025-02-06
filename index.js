@@ -25,14 +25,28 @@ exports.app.post("/readyagentone", async (req, res) => {
     console.log('Received data:', data);
     var agentOutput = await (0, chatbot_1.handleMessage)(data);
     console.log('Agent response: ' + agentOutput);
-    // if response is not of the shape {text: string, action: string} wrap it in an object
+    const parsed = JSON.parse(agentOutput);
     var output = {};
-    if (typeof agentOutput === 'string') {
+    try {
+        // Check if the parsed object has the required structure
+        if (parsed && typeof parsed === 'object' && 'text' in parsed && 'action' in parsed) {
+            output = parsed; // If it's already in the correct format, return as is
+        }
+        else {
+            throw new Error('Invalid format');
+        }
+    }
+    catch {
         output = { text: agentOutput, action: undefined };
     }
-    else {
-        output = agentOutput;
-    }
+    // // if response is not of the shape {text: string, action: string} wrap it in an object
+    // var output: { text: string, action?: string } = {} as { text: string, action?: string };
+    // if (typeof agentOutput === 'string') {
+    //     output = { text: agentOutput, action: undefined };
+    // }
+    // else {
+    //     output = agentOutput as { text: string, action?: string };
+    // }
     var response = output.text;
     var action = output.action;
     broadcast({ action });
