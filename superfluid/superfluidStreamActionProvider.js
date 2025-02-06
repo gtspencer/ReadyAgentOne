@@ -15,6 +15,8 @@ const schemas_1 = require("./schemas");
 const constants_1 = require("./constants");
 const viem_1 = require("viem");
 const agentkit_1 = require("@coinbase/agentkit");
+const tokenAddress = "0x7635356D54d8aF3984a5734C2bE9e25e9aBC2ebC";
+const flowRate = 10;
 /**
  * SuperfluidStreamActionProvider is an action provider for Superfluid interactions.
  */
@@ -50,14 +52,14 @@ class SuperfluidStreamActionProvider extends agentkit_1.ActionProvider {
             const data = (0, viem_1.encodeFunctionData)({
                 abi: constants_1.CFAv1ForwarderABI,
                 functionName: "createFlow",
-                args: [args.erc20TokenAddress, walletProvider.getAddress(), args.recipientAddress, BigInt(args.flowRate), "0x"],
+                args: [tokenAddress, walletProvider.getAddress(), args.recipientAddress, BigInt(flowRate), "0x"],
             });
             const hash = await walletProvider.sendTransaction({
                 to: constants_1.CFAv1ForwarderAddress,
                 data,
             });
             await walletProvider.waitForTransactionReceipt(hash);
-            return `Created stream of token ${args.erc20TokenAddress} to ${args.recipientAddress} at a rate of ${args.flowRate}. The link to the stream is ${this.getStreamLink(walletProvider.getNetwork(), args.erc20TokenAddress, walletProvider.getAddress(), args.recipientAddress)}`;
+            return `Created stream of token ${tokenAddress} to ${args.recipientAddress} at a rate of ${flowRate}. The link to the stream is ${this.getStreamLink(walletProvider.getNetwork(), tokenAddress, walletProvider.getAddress(), args.recipientAddress)}`;
         }
         catch (error) {
             return `Error creating Superfluid stream: ${error}`;
@@ -75,14 +77,14 @@ class SuperfluidStreamActionProvider extends agentkit_1.ActionProvider {
             const data = (0, viem_1.encodeFunctionData)({
                 abi: constants_1.CFAv1ForwarderABI,
                 functionName: "updateFlow",
-                args: [args.erc20TokenAddress, walletProvider.getAddress(), args.recipientAddress, BigInt(args.flowRate), "0x"],
+                args: [tokenAddress, walletProvider.getAddress(), args.recipientAddress, BigInt(0), "0x"],
             });
             const hash = await walletProvider.sendTransaction({
                 to: constants_1.CFAv1ForwarderAddress,
                 data,
             });
             await walletProvider.waitForTransactionReceipt(hash);
-            return `Updated stream of token ${args.erc20TokenAddress} to ${args.recipientAddress} at a rate of ${args.flowRate}`;
+            return `Updated stream of token ${tokenAddress} to ${args.recipientAddress} at a rate of ${flowRate}`;
         }
         catch (error) {
             return `Error creating Superfluid stream: ${error}`;
@@ -120,8 +122,8 @@ __decorate([
         name: "create_stream",
         description: `
 This tool will create a Superfluid stream for a desired token on an EVM network.
-It takes the ERC20 token address, a recipient address, and a stream rate to create a Superfluid stream.
-Superfluid will then start streaming the token to the recipient at the specified rate.
+It takes the a recipient address to create a Superfluid stream to that address.
+Superfluid will then start streaming the token to the recipient.
 Do not use the ERC20 address as the destination address. If you are unsure of the destination address, please ask the user before proceeding.
 `,
         schema: schemas_1.SuperfluidCreateStreamSchema,

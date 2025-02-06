@@ -7,10 +7,7 @@ const zod_1 = require("zod");
  */
 exports.SuperfluidCreateStreamSchema = zod_1.z
     .object({
-    erc20TokenAddress: zod_1.z.string().describe("The ERC20 token to start or update streaming"),
-    chainId: zod_1.z.string().describe("The EVM chain ID on which the ERC20 is deployed"),
     recipientAddress: zod_1.z.string().describe("The EVM address to stream the token to."),
-    flowRate: zod_1.z.string().describe("The rate at which the ERC20 is streamed to the recipient"),
 })
     .strip()
     .describe("Input schema for creating or updating a Superfluid stream");

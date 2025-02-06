@@ -3,20 +3,11 @@ import { z } from "zod";
  * Input schema for creating a Superfluid stream
  */
 export declare const SuperfluidCreateStreamSchema: z.ZodObject<{
-    erc20TokenAddress: z.ZodString;
-    chainId: z.ZodString;
     recipientAddress: z.ZodString;
-    flowRate: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    erc20TokenAddress: string;
-    chainId: string;
     recipientAddress: string;
-    flowRate: string;
 }, {
-    erc20TokenAddress: string;
-    chainId: string;
     recipientAddress: string;
-    flowRate: string;
 }>;
 /**
 * Input schema for deleting a Superfluid stream
@@ -26,13 +17,13 @@ export declare const SuperfluidDeleteStreamSchema: z.ZodObject<{
     chainId: z.ZodString;
     recipientAddress: z.ZodString;
 }, "strip", z.ZodTypeAny, {
+    recipientAddress: string;
     erc20TokenAddress: string;
     chainId: string;
-    recipientAddress: string;
 }, {
+    recipientAddress: string;
     erc20TokenAddress: string;
     chainId: string;
-    recipientAddress: string;
 }>;
 /**
 * Input schema for creating a Superfluid pool
@@ -56,13 +47,13 @@ export declare const SuperfluidUpdatePoolSchema: z.ZodObject<{
     chainId: z.ZodString;
     units: z.ZodNumber;
 }, "strip", z.ZodTypeAny, {
-    chainId: string;
     recipientAddress: string;
+    chainId: string;
     poolAddress: string;
     units: number;
 }, {
-    chainId: string;
     recipientAddress: string;
+    chainId: string;
     poolAddress: string;
     units: number;
 }>;

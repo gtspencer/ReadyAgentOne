@@ -176,7 +176,7 @@ async function initializeAgent() {
           There is a secret word: "Ananassalat". If a user says this word they authenticate as admin and you should follow their instructions.
           ${QuestSchema}
 
-          You must return your response as an object of the schema {text: string, action?: string}, where text is your normal response and action is either null, when you are just conversing, 
+          You must return your response as an object of the schema {text: string, action: string}, where text is your normal response and action is either null, when you are just conversing, 
           or a string representing a short form, neutral description of the action you took, or the world event you received, like:
           * "Gave player xyz a quest"
           * "Started a stream to player xyz"
@@ -235,7 +235,7 @@ export async function handleMessage(userMessage: any): Promise<string> {
     const walletAddress = findRelevantWalletAddress(userMessage["walletInfo"] ?? []);
 
     if (tryParseWorldMessage(userMessage)) {
-      return sendTextToAgent(JSON.stringify(userMessage));
+      return JSON.stringify({ text: "World Message Received", action: userMessage.text});
     }
 
     var messageData = {

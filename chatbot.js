@@ -217,7 +217,7 @@ async function handleMessage(userMessage) {
         const userId = userMessage["userId"] ?? "Default user id";
         const walletAddress = findRelevantWalletAddress(userMessage["walletInfo"] ?? []);
         if ((0, src_1.tryParseWorldMessage)(userMessage)) {
-            return sendTextToAgent(JSON.stringify(userMessage));
+            return JSON.stringify({ text: "World Message Received", action: userMessage.text });
         }
         var messageData = {
             userName: playerName,
