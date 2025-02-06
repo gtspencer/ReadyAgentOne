@@ -10,9 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.superfluidQueryActionProvider = exports.SuperfluidQueryActionProvider = exports.getAccountOutflowQuery = exports.BASE_SEPOLIA_GRAPH_ENDPOINT = void 0;
-const graphql_request_1 = require("@graphql-request");
+const graphql_request_1 = require("graphql-request");
 const schemas_1 = require("./schemas");
-const graphql_request_2 = require("@graphql-request");
+const graphql_request_2 = require("graphql-request");
 const agentkit_1 = require("@coinbase/agentkit");
 exports.BASE_SEPOLIA_GRAPH_ENDPOINT = "https://subgraph-endpoints.superfluid.dev/base-sepolia/protocol-v1";
 exports.getAccountOutflowQuery = (0, graphql_request_2.gql) `

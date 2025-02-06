@@ -16,8 +16,6 @@ exports.SuperfluidCreateStreamSchema = zod_1.z
 */
 exports.SuperfluidDeleteStreamSchema = zod_1.z
     .object({
-    erc20TokenAddress: zod_1.z.string().describe("The ERC20 token to start streaming"),
-    chainId: zod_1.z.string().describe("The EVM chain ID on which the ERC20 is deployed"),
     recipientAddress: zod_1.z.string().describe("The EVM address to stream the token to."),
 })
     .strip()

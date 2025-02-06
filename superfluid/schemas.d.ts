@@ -13,17 +13,11 @@ export declare const SuperfluidCreateStreamSchema: z.ZodObject<{
 * Input schema for deleting a Superfluid stream
 */
 export declare const SuperfluidDeleteStreamSchema: z.ZodObject<{
-    erc20TokenAddress: z.ZodString;
-    chainId: z.ZodString;
     recipientAddress: z.ZodString;
 }, "strip", z.ZodTypeAny, {
     recipientAddress: string;
-    erc20TokenAddress: string;
-    chainId: string;
 }, {
     recipientAddress: string;
-    erc20TokenAddress: string;
-    chainId: string;
 }>;
 /**
 * Input schema for creating a Superfluid pool

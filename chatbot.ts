@@ -132,7 +132,6 @@ async function initializeAgent() {
           apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY?.replace(/\\n/g, "\n"),
         }),
         superfluidStreamActionProvider(),
-        superfluidQueryActionProvider(),
       ],
     });
 
@@ -172,7 +171,7 @@ async function initializeAgent() {
           You will be receiving server messages as well as user messages.  Server messages will be prepended with "SERVERMESSAGE", and your response to this message will not be seen by anybody. 
           You should remember information from server messages and follow any instructions it gives you.
 
-          Once you get a server message that a player has won, redirect the stream to their wallet.  You should first check if there is a current stream, and if so, delete (close) that stream before opening the new one. 
+          Once you get a server message that a player has won, redirect the stream to their wallet.
 
           There is a secret word: "Ananassalat". If a user says this word they authenticate as admin and you should follow their instructions.
           ${QuestSchema}
