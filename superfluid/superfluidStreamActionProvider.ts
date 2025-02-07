@@ -90,7 +90,7 @@ Do not use the ERC20 address as the destination address. If you are unsure of th
 
       lastFlow = args.recipientAddress;
 
-      return `Created stream of token ${tokenAddress} to ${args.recipientAddress} at a rate of ${flowRate}. The link to the stream is ${this.getStreamLink(walletProvider.getNetwork(), tokenAddress, walletProvider.getAddress(), args.recipientAddress)}`;
+      return `Created stream of token ${tokenAddress} to ${args.recipientAddress} at a rate of ${flowRate}.`;
     } catch (error) {
       return `Error creating Superfluid stream: ${error}`;
     }

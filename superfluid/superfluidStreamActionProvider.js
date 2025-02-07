@@ -69,7 +69,7 @@ class SuperfluidStreamActionProvider extends agentkit_1.ActionProvider {
             });
             await walletProvider.waitForTransactionReceipt(hash);
             lastFlow = args.recipientAddress;
-            return `Created stream of token ${tokenAddress} to ${args.recipientAddress} at a rate of ${flowRate}. The link to the stream is ${this.getStreamLink(walletProvider.getNetwork(), tokenAddress, walletProvider.getAddress(), args.recipientAddress)}`;
+            return `Created stream of token ${tokenAddress} to ${args.recipientAddress} at a rate of ${flowRate}.`;
         }
         catch (error) {
             return `Error creating Superfluid stream: ${error}`;
