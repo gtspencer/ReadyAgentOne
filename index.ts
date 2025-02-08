@@ -33,10 +33,10 @@ app.post("/readyagentone", async (req: Request, res: Response) => {
     var agentOutput = await handleMessage(data);
     console.log('Agent response: ' + agentOutput)
 
-    const parsed = JSON.parse(agentOutput);
-    var output: { text: string, action?: string } = {} as { text: string, action?: string };
+    var output: { text: string, action?: string } = {} as { text: string, action?: string };    
 
     try {
+        const parsed = JSON.parse(agentOutput);
         // Check if the parsed object has the required structure
         if (parsed && typeof parsed === 'object' && 'text' in parsed && 'action' in parsed) {
             output = parsed; // If it's already in the correct format, return as is
@@ -46,7 +46,6 @@ app.post("/readyagentone", async (req: Request, res: Response) => {
     } catch {
         output = { text: agentOutput, action: undefined };
     }
-
 
     // // if response is not of the shape {text: string, action: string} wrap it in an object
     // var output: { text: string, action?: string } = {} as { text: string, action?: string };
