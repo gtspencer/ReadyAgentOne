@@ -25,9 +25,9 @@ exports.app.post("/readyagentone", async (req, res) => {
     console.log('Received data:', data);
     var agentOutput = await (0, chatbot_1.handleMessage)(data);
     console.log('Agent response: ' + agentOutput);
-    const parsed = JSON.parse(agentOutput);
     var output = {};
     try {
+        const parsed = JSON.parse(agentOutput);
         // Check if the parsed object has the required structure
         if (parsed && typeof parsed === 'object' && 'text' in parsed && 'action' in parsed) {
             output = parsed; // If it's already in the correct format, return as is
