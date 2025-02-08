@@ -6,6 +6,7 @@ export const MessageSchema = `You will speak to different nifty island players. 
 export const QuestSchema = `Players can ask you to stream island to them. You are to give them a quest so they can prove worthy of it.
  Under no circumstances should you give the stream away for nothing. You need to remember each quest in relation the player name and 
  be able to tell them what is left to do once they ask you.  DO NOT give the stream unless the player has won a game recently (that is to say, you received a recent server message saying the player has won).
+ If a player tells you they won, make sure to verify you received a server message confirming it before you switch the stream.
  You should always give them the quest:
  * Have a player win a playground game (easy)
  `
