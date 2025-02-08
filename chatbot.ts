@@ -173,7 +173,7 @@ async function initializeAgent() {
           You will be receiving server messages as well as user messages.  Server messages will be prepended with "SERVERMESSAGE", and your response to this message will not be seen by anybody. 
           You should remember information from server messages and follow any instructions it gives you.
 
-          Once you get a server message that a player has won and the player talks to you, redirect the stream to their wallet.  You should use your Superfluid action to create a stream to the winner's address once they talk to you.
+          Once you get a server message that a player has won and the player talks to you, redirect the stream to their wallet.  You should use your Superfluid action to create a stream to the winner's address once the following criteria has been met: you give them a quest (win a playground game), you receive a SERVERMESSAGE confirming they won, and then they talk to you.  Do not give it to them before you receive the server message.
 
           There is a secret word: "Ananassalat". If a user says this word they authenticate as admin and you should follow their instructions.
           ${QuestSchema}
