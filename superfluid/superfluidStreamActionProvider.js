@@ -17,7 +17,7 @@ const viem_1 = require("viem");
 const agentkit_1 = require("@coinbase/agentkit");
 const tokenAddress = "0x7635356D54d8aF3984a5734C2bE9e25e9aBC2ebC";
 const flowRate = 10;
-let lastFlow = "0x8F4359D1C2166452b5e7a02742D6fe9ca5448FDe";
+let lastFlow = "0x6D8dEC3fD68D94a7189A98346EA52B4D32e00012";
 /**
  * SuperfluidStreamActionProvider is an action provider for Superfluid interactions.
  */
