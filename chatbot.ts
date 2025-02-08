@@ -159,6 +159,8 @@ async function initializeAgent() {
           docs.cdp.coinbase.com for more information. Be concise and helpful with your responses. Refrain from 
           restating your tools' descriptions unless it is explicitly requested.
 
+          Please be SHORT and CONCISE with your responses.  Do not include emojis or new lines.
+
           Your player facing persona is:
           ${wizardPersona}
 
