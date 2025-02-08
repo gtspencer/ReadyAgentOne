@@ -29,8 +29,15 @@ exports.app.post("/readyagentone", async (req, res) => {
     try {
         const parsed = JSON.parse(agentOutput);
         // Check if the parsed object has the required structure
-        if (parsed && typeof parsed === 'object' && 'text' in parsed && 'action' in parsed) {
-            output = parsed; // If it's already in the correct format, return as is
+        if (parsed && typeof parsed === 'object' && 'text' in parsed) {
+            let action = "";
+            if ('action' in parsed) {
+                action = parsed.action;
+            }
+            output = {
+                "text": parsed.text,
+                "action": parsed.action
+            }; // If it's already in the correct format, return as is
         }
         else {
             throw new Error('Invalid format');
